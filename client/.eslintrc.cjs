@@ -1,7 +1,6 @@
 module.exports = {
   env: { browser: true, es2020: true },
   extends: [
-    'airbnb',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
@@ -14,4 +13,17 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
+  overrides: [
+    {
+      files: ['src/**/*.ts', 'src/**/*.tsx'],
+      extends: ['airbnb'],
+    },
+    {
+      files: ['*'],
+      excludedFiles: ['src/**/*.ts', 'src/**/*.tsx'],
+      rules: {
+        // Disable all rules for files outside of 'src' directory
+      },
+    },
+  ],
 };
