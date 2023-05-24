@@ -1,7 +1,9 @@
+import Navigation from './components/UI/Navigation.tsx';
+
 function App() {
   return (
-    <div className="bg-red-800">
-      hello
+    <div className="font-roboto">
+      <Navigation />
     </div>
   );
 }
