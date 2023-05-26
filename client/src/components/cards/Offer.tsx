@@ -1,23 +1,49 @@
 import Assets from '../../Assets.tsx';
 
-function Offer() {
+function Offer({
+  name,
+  image,
+  description,
+  price,
+  previousPrice,
+}:{name:string,
+  image:string,
+  description:string,
+  price:number
+  previousPrice:number}) {
   return (
-    <div className="w-56 p-2 flex flex-col gap-2 bg-white rounded-md text-primary_dark">
-      <img src="https://plus.unsplash.com/premium_photo-1670426501357-23bbaaab1e3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="!!" className="w-60 rounded-md" />
+    <div className="w-60 p-2 flex flex-col gap-2 bg-white rounded-md text-primary_dark">
+      <img src={image} alt="!!" className="w-60 rounded-md" />
       <div className="flex items-center justify-between">
-        <div className="text-xl">Pendant</div>
-        <button type="button"><img src={Assets.heart} alt="!" /></button>
+        <div className="text-xl">{name}</div>
+        <button type="button"><img src={Assets.cart} alt="!" /></button>
       </div>
-      <text className="text-sm text-tertiary_dark">Lorem ipsum dolor sit amet consectetur adipisicing elit...</text>
-      <div className="text-2xl text-success font-semibold">₹250</div>
-      <div className="text-tertiary_dark"><s>₹500</s></div>
-      <div className="flex items-center justify-between">
-        <button type="button" className="w-[70%] p-2 bg-primary flex justify-center gap-3">
-          <img src={Assets.view} alt="!!" />
-          <span className="text-primary_white font-bold">VIEW</span>
-        </button>
-        <button type="button"><img src={Assets.cart} alt="!!" className="h-8" /></button>
+      <p className="text-sm text-tertiary_dark">
+        {description.substring(0, 43)}
+        ....
+        <button type="button" className="text-primary underline inline">Read More</button>
+      </p>
+      <div className="flex flex-wrap">
+        <span className="bg-red-500 text-primary_white px-2 rounded-full text-sm">
+          -
+          {(price / previousPrice) * 100}
+          %
+        </span>
       </div>
+      <div className="text-2xl text-success font-semibold">
+        ₹
+        {price}
+      </div>
+      <div className="text-tertiary_dark">
+        <s>
+          ₹
+          {previousPrice}
+        </s>
+      </div>
+      <button type="button" className="w-full p-1 bg-primary flex items-center justify-center gap-3 rounded-sm">
+        <img src={Assets.view} alt="!!" className="h-3" />
+        <span className="text-primary_white font-bold">VIEW</span>
+      </button>
     </div>
   );
 }
