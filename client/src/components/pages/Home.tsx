@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Navigation from '../UI/Navigation.tsx';
+import Offer from '../cards/Offer.tsx';
 
 function Home() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,6 +36,8 @@ function Home() {
   return (
     <div className="m-auto">
       <Navigation />
+
+      {/* CAROUSEL */}
       <div className="absolute w-[100vw] top-[25%] z-10 hidden md:flex justify-between">
         <button type="button" className="m-5 rounded-full bg-primary_white p-2 text-3xl" onClick={carouselPrevious}>{'<'}</button>
         <button type="button" className="m-5 rounded-full bg-primary_white p-2 text-3xl" onClick={carouselNext}>{'>'}</button>
@@ -54,6 +57,19 @@ function Home() {
         {carouselData.map((item, i) => (
           <button type="button" onClick={() => setActiveIndex(i)} aria-label="slide" className={`w-6 ${activeIndex === i ? 'h-2' : 'h-3'} bg-secondary_dark`} />
         ))}
+      </div>
+
+      {/* OFFERS */}
+      <div className="overflow-x-hidden py-4 px-[5%] md:px-[15%] m-auto bg-primary_white">
+        <div className="my-3 text-2xl font-semibold">OFFERS</div>
+        <div className="grid grid-cols-3 gap-3">
+          <Offer />
+          <Offer />
+          <Offer />
+          <Offer />
+          <Offer />
+          <Offer />
+        </div>
       </div>
     </div>
   );
