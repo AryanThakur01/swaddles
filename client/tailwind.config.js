@@ -15,7 +15,7 @@ export default {
         tertiary_white: "#ACACAC",
         primary_dark: "#1E1E1E",
         secondary_dark: "#4E4E4E",
-        tertiary_dark: "#6E6E6E",
+        tertiary_dark: "#4B5563",
         primary: "#0D6EFD",
         success: "#38A169",
       }
