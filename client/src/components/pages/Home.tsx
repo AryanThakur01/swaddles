@@ -3,7 +3,7 @@ import Navigation from '../UI/Navigation.tsx';
 import Offer from '../cards/Product.tsx';
 
 function Home() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const carouselData = [
     {

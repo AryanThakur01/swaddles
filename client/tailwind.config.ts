@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        roboto: "roboto"
+        roboto: "Roboto"
       },
       colors: {
         primary_white: "#E7E7E7",

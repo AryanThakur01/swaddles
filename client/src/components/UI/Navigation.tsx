@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Assets from '../../Assets.tsx';
+import Assets from '../../assests.ts';
 
 function Navigation() {
   const [menu, setMenu] = useState(0);
