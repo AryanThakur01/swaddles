@@ -25,7 +25,6 @@ function Home() {
       shortDescription: 'Hello this is awesome, please check me out',
     },
   ];
-
   const offerProducts = [
     {
       id: 1, name: 'Pendant-1', image: 'https://plus.unsplash.com/premium_photo-1670426501357-23bbaaab1e3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80', description: 'A pendant preferred by many people with good taste and is rated well', price: 250, previousPrice: 500,
@@ -55,7 +54,6 @@ function Home() {
       id: 9, name: 'Pendant-9', image: 'https://plus.unsplash.com/premium_photo-1670426501357-23bbaaab1e3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80', description: 'A pendant preferred by many people with good taste and is rated well', price: 250, previousPrice: 500,
     },
   ];
-
   const BestSellers = [
     {
       id: 1, name: 'Best Pendant-A', image: 'https://plus.unsplash.com/premium_photo-1670426501357-23bbaaab1e3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80', description: 'A pendant preferred by many people with good taste and is rated well', price: 250,
@@ -199,10 +197,11 @@ function Home() {
         <button type="button" className="m-5 rounded-md bg-primary_white py-5 px-1 text-3xl" onClick={() => scrollLeft('#topProducts')}>{'<'}</button>
         <button type="button" className="m-5 rounded-md bg-primary_white py-5 px-1 text-3xl" onClick={() => scrollRight('#topProducts')}>{'>'}</button>
       </div>
-      <div id="topProducts" className="w-full flex overflow-x-hidden scroll-smooth rounded-md">
+      <div id="topProducts" className="w-full flex overflow-x-hidden scroll-smooth rounded-md snap-x snap-mandatory">
         <div className="inline-flex justify-center flex-nowrap gap-5 h-[100vh]">
-          <div style={{ background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover` }} className="h-full w-[100vw]" />
-          <div style={{ background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover` }} className="h-full w-[100vw]" />
+          <div style={{ background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover` }} className="h-full w-[100vw] snap-always snap-center" />
+          <div style={{ background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover` }} className="h-full w-[100vw] snap-always snap-center" />
+          <div style={{ background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover` }} className="h-full w-[100vw] snap-always snap-center" />
         </div>
       </div>
 
