@@ -1,4 +1,6 @@
+.env
 node_modules
-package-lock.json
-**/.env
 dist
+package-lock.json
+
+*.local
