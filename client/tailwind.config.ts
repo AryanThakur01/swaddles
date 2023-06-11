@@ -6,9 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily: {
-        roboto: "Roboto"
-      },
       colors: {
         primary_white: "#E7E7E7",
         secondary_white: "#C8C8C8",
