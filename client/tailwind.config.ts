@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -15,9 +12,18 @@ export default {
         tertiary_dark: "#4B5563",
         primary: "#0D6EFD",
         success: "#38A169",
-      }
+      },
+      keyframes: {
+        popup: {
+          "0%": { transform: "scale(0)" },
+          "50%": { transform: "scale(1.1)" },
+          "100%": { transform: "scale(1)" },
+        },
+      },
+      animation: {
+        popup: "popup 0.3s linear",
+      },
     },
   },
   plugins: [],
-}
-
+};
