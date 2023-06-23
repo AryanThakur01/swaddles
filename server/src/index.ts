@@ -1,5 +1,5 @@
 import { config } from 'dotenv'
-import express from 'express'
+import express, { json } from 'express'
 // ------------------ Calling the routes --------------------
 import notFound from './middleware/notFound'
 import authRouter from './routes/auth'
@@ -8,6 +8,7 @@ import connectDb from './config/db'
 
 const app = express()
 config()
+app.use(json())
 
 // --------------------- End Points -------------------------
 app.use('/api/v1/auth', authRouter)
