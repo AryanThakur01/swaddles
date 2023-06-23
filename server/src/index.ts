@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import express, { json } from 'express'
 // ------------------ Calling the routes --------------------
+import errorHandlerMiddleware from './middleware/error_handler'
 import notFound from './middleware/notFound'
 import authRouter from './routes/auth'
 import connectDb from './config/db'
@@ -12,6 +13,10 @@ app.use(json())
 
 // --------------------- End Points -------------------------
 app.use('/api/v1/auth', authRouter)
+// ----------------------------------------------------------
+
+// --------------------- Middlewares ------------------------
+app.use(errorHandlerMiddleware)
 app.use(notFound)
 // ----------------------------------------------------------
 
