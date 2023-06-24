@@ -13,7 +13,6 @@ const errorHandlerMiddleware = (
       'Some Error Occurred, check {error_handler middleware}',
     statusCode: err.statusCode || 500,
   }
-  console.log(err)
   res.status(customError.statusCode).json(customError)
 }
 

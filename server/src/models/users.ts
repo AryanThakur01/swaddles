@@ -1,39 +1,22 @@
-import mongoose from 'mongoose'
+import { Model, Schema, model } from 'mongoose'
+import { IUser, IUserMethods } from '../config/Interfaces'
 import { compare, genSalt, hash } from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-const UserSchema = new mongoose.Schema(
+type UserModel = Model<IUser, {}, IUserMethods>
+const UserSchema = new Schema<IUser, IUserMethods>(
   {
     username: {
       type: String,
       required: true,
-    },
-    email: {
-      type: String,
-      required: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: true,
-      minlength: 8,
-    },
-    address: {
-      type: String,
-      required: false,
-    },
-    deliveryAddress: {
-      type: String,
-      required: false,
-    },
-    mobile: {
-      type: Number,
-      required: false,
-    },
-    mobileAlt: {
-      type: Number,
-      required: false,
-    },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    address: { type: String, required: true },
+    deliveryAddress: { type: String, required: false },
+    mobile: { type: Number, required: true },
+    mobileAlt: { type: Number, required: true },
   },
   { timestamps: true }
 )
@@ -53,4 +36,4 @@ UserSchema.methods.createJWT = async function () {
   return jwt.sign({ id: this._id }, jwtSecret, { expiresIn: jwtExpiry })
 }
 
-export default mongoose.model('User', UserSchema)
+export default model<IUser, UserModel>('User', UserSchema)
