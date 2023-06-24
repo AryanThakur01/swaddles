@@ -1,4 +1,10 @@
-interface customError extends Error {
+export interface CustomError extends Error {
   statusCode?: number
-  code?: Number
+  code?: number
+}
+
+export interface LoginData {
+  username?: String
+  email?: String
+  password: String
 }

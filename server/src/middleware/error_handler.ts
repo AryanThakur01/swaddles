@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
+import { CustomError } from '../config/Interfaces'
 
 const errorHandlerMiddleware = (
-  err: customError,
+  err: CustomError,
   req: Request,
   res: Response,
   next: NextFunction
@@ -10,9 +11,10 @@ const errorHandlerMiddleware = (
     message:
       err.message.split(':')[0] ||
       'Some Error Occurred, check {error_handler middleware}',
-    statusCode: err.statusCode || err.code,
+    statusCode: err.statusCode || 500,
   }
-  res.status(201).json(customError)
+  console.log(err)
+  res.status(customError.statusCode).json(customError)
 }
 
 export default errorHandlerMiddleware
