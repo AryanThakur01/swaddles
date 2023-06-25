@@ -23,6 +23,9 @@ export default {
       animation: {
         popup: "popup 0.3s linear",
       },
+      borderRadius: {
+        sm: "0.2rem",
+      },
     },
   },
   plugins: [],

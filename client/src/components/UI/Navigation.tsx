@@ -2,12 +2,13 @@ import { useState } from "react";
 import { FaHome, FaInfo, FaRegAddressBook, FaUserCircle } from "react-icons/fa";
 import { HiMenuAlt4, HiSearch, HiShoppingCart } from "react-icons/hi";
 import { GrClose, GrLogin } from "react-icons/gr";
+import { Link } from "react-router-dom";
 
 function Navigation() {
   const [menu, setMenu] = useState(0);
 
   const navigationList = [
-    { page: "Home", link: "", logo: <FaHome /> },
+    { page: "Home", link: "/", logo: <FaHome /> },
     { page: "About", link: "/about", logo: <FaInfo /> },
     { page: "Cart", link: "/cart", logo: <HiShoppingCart /> },
     { page: "Login", link: "/login", logo: <GrLogin />, special: true },
@@ -67,12 +68,13 @@ function Navigation() {
                 {navigationList.map((item) => (
                   <div key={item.page}>
                     {!item.special && (
-                      <button
+                      <Link
+                        to={item.link}
                         type="button"
                         className="flex items-center gap-2 hover:invert-[20%] text-left p-1 my-2 rounded-sm w-52"
                       >
                         {item.logo} {item.page}
-                      </button>
+                      </Link>
                     )}
                   </div>
                 ))}
@@ -81,12 +83,13 @@ function Navigation() {
                 {navigationList.map((item) => (
                   <div key={item.page}>
                     {item.special && (
-                      <button
+                      <Link
+                        to={item.link}
                         type="button"
                         className="flex items-center gap-2 hover:invert-[10%] text-left p-1 my-2 rounded-sm w-52 bg-tertiary_white"
                       >
                         {item.logo} {item.page}
-                      </button>
+                      </Link>
                     )}
                   </div>
                 ))}

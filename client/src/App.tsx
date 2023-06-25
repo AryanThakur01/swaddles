@@ -1,9 +1,10 @@
-import Home from './components/pages/Home.tsx';
+import { RouterProvider } from "react-router-dom";
+import router from "./Routes.tsx";
 
 function App() {
   return (
     <div className="font-roboto">
-      <Home />
+      <RouterProvider router={router} />
     </div>
   );
 }
