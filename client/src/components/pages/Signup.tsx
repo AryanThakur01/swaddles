@@ -32,7 +32,7 @@ const Signup: FC = () => {
     try {
       const res = await axios({
         method: "post",
-        url: `/api/v1/auth/register`,
+        url: `${import.meta.env.VITE_BACKEND}/api/v1/auth/register`,
         data: {
           ...values,
         },
