@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken'
 type UserModel = Model<IUser, {}, IUserMethods>
 const UserSchema = new Schema<IUser, IUserMethods>(
   {
+    firstname: { type: String, required: true },
+    lastname: { type: String, required: true },
     username: {
       type: String,
       required: true,
@@ -16,7 +18,7 @@ const UserSchema = new Schema<IUser, IUserMethods>(
     address: { type: String, required: true },
     deliveryAddress: { type: String, required: false },
     mobile: { type: Number, required: true },
-    mobileAlt: { type: Number, required: true },
+    mobileAlt: { type: Number, required: false },
   },
   { timestamps: true }
 )

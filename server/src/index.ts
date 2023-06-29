@@ -1,5 +1,6 @@
 import { config } from 'dotenv'
 import express, { json } from 'express'
+import cors from 'cors'
 // ------------------ Calling the routes --------------------
 import errorHandlerMiddleware from './middleware/error_handler'
 import notFound from './middleware/notFound'
@@ -10,6 +11,11 @@ import connectDb from './config/db'
 const app = express()
 config()
 app.use(json())
+app.use(
+  cors({
+    origin: ['http://localhost:5173'],
+  })
+)
 
 // --------------------- End Points -------------------------
 app.use('/api/v1/auth', authRouter)

@@ -13,6 +13,8 @@ export interface LoginData {
 
 // ------------------- Interfaces for Schemas ------------------
 export interface IUser {
+  firstname: string
+  lastname: string
   username: string
   email: string
   password: string
