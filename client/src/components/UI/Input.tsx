@@ -1,7 +1,8 @@
 import { ErrorMessage, Field } from "formik";
 import { IInputFields } from "../../interfaces/interface";
+import { FC } from "react";
 
-const Input = ({ label, placeholder, isRequired, uni }: IInputFields) => {
+const Input: FC<IInputFields> = ({ label, placeholder, isRequired, uni }) => {
   return (
     <div className="flex flex-col w-full">
       <label htmlFor={uni}>

@@ -1,13 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../UI/Navigation";
 import assets from "../assets";
 import { FaArrowRight, FaGoogle } from "react-icons/fa";
 import Input from "../UI/Input";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
-import { IRegistrationData } from "../../interfaces/interface";
+import {
+  IRegistrationData,
+  IUserData,
+  IUserDocument,
+} from "../../interfaces/interface";
 import axios from "axios";
+import { UserDetails } from "../../context/AuthProvider";
 
 const Signup: FC = () => {
   const validationSchema = yup.object({
@@ -28,20 +33,31 @@ const Signup: FC = () => {
     address: "",
     mobile: "",
   };
+
+  const userData: IUserDocument | undefined = UserDetails();
   const onSumitHandler = async (values: IRegistrationData) => {
     try {
-      const res = await axios({
+      const {
+        data: { user },
+        data: { token },
+      }: IUserData = await axios({
         method: "post",
         url: `${import.meta.env.VITE_BACKEND}/api/v1/auth/register`,
         data: {
           ...values,
         },
       });
-      console.log(res);
+      userData?.setUser && userData.setUser(user);
+      localStorage.setItem("token", token);
     } catch (error) {
       console.log(error);
     }
   };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) navigate("/");
+  }, [userData]);
   return (
     <div>
       <Navigation />

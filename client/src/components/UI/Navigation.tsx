@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { FaHome, FaInfo, FaRegAddressBook, FaUserCircle } from "react-icons/fa";
 import { HiMenuAlt4, HiSearch, HiShoppingCart } from "react-icons/hi";
 import { GrClose, GrLogin } from "react-icons/gr";
 import { Link } from "react-router-dom";
 
-function Navigation() {
+const Navigation: FC = () => {
   const [menu, setMenu] = useState(0);
 
   const navigationList = [
@@ -102,6 +102,6 @@ function Navigation() {
       )}
     </>
   );
-}
+};
 
 export default Navigation;

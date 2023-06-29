@@ -9,7 +9,9 @@ export const testAuth = (req: Request, res: Response) => {
 
 export const register = asyncHandler(async (req: Request, res: Response) => {
   const user = await User.create(req.body)
-  res.status(200).json({ ...user })
+  const token: string = await user.createJWT()
+  user.password = ''
+  res.status(200).json({ user: user, token })
 })
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
