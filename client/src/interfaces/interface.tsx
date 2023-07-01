@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, ReactNode, SetStateAction } from "react";
 
 // ----------------------- Sign up -----------------
 export interface IRegistrationData {
@@ -25,11 +25,29 @@ export interface IUserData {
 }
 // -------------------------------------------------
 
+// --------------------- Login ---------------------
+export interface ILogin {
+  username: string;
+  password: string;
+}
+// -------------------------------------------------
+
 // ---------------------- Input Field --------------
 export interface IInputFields {
   label: string;
   placeholder: string;
   isRequired?: boolean;
   uni: string;
+}
+// -------------------------------------------------
+
+// --------------------- Navigation ----------------
+export interface INavigationCategory {
+  page: string;
+  link: string;
+  logo: ReactNode;
+  displayTo?: "all" | "logged" | "not-logged";
+  special?: boolean;
+  function?: () => void;
 }
 // -------------------------------------------------

@@ -15,14 +15,16 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
-  const { username, email, password }: LoginData = req.body
+  const { username, password }: LoginData = req.body
 
-  if (!username && !email) throw new Error('Enter Username Or Email')
+  if (!username) throw new Error('Enter Username Or Email')
   if (!password) throw new Error('Enter password')
 
   let user
-  if (username) user = await User.findOne({ username })
-  else user = await User.findOne({ email })
+  if (username) {
+    user = await User.findOne({ username })
+    if (!user) user = await User.findOne({ email: username })
+  }
 
   if (!user) throw new Error('Not Registered')
 
