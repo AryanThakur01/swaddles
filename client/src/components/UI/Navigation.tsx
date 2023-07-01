@@ -55,13 +55,21 @@ const Navigation: FC = () => {
         className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md"
       >
         {/* PROFILE */}
-        <button
-          type="button"
-          className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold"
-        >
-          <FaUserCircle />
-        </button>
-
+        {localStorage.getItem("token") ? (
+          <Link
+            className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold"
+            to="/account"
+          >
+            <FaUserCircle />
+          </Link>
+        ) : (
+          <Link
+            className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold"
+            to="/login"
+          >
+            <FaUserCircle />
+          </Link>
+        )}
         {/* LOGO */}
         <div className="tracking-widest">SWADDLES</div>
         <div className="flex items-center gap-3">

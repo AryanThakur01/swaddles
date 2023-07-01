@@ -50,4 +50,8 @@ export interface INavigationCategory {
   special?: boolean;
   function?: () => void;
 }
+export interface IAccountNavigation {
+  children: ReactNode;
+  activePage: string;
+}
 // -------------------------------------------------
