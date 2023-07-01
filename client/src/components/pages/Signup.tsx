@@ -64,7 +64,7 @@ const Signup: FC = () => {
   return (
     <div>
       <Navigation />
-      <div className="flex md:w-[80%] m-3 md:mx-auto my-20 gap-8 border-2 border-black p-5 rounded-sm">
+      <div className="flex md:w-[80%] bg-white m-3 md:mx-auto my-20 gap-8 shadow-md p-5 rounded-sm">
         <div
           className="md:w-[45%] min-h-full overflow-hidden rounded-md md:flex hidden"
           style={{
@@ -140,7 +140,7 @@ const Signup: FC = () => {
                   <div className="flex flex-col w-full gap-2">
                     <button
                       type="submit"
-                      className="p-2 text-white bg-black rounded-sm flex justify-center items-center gap-2"
+                      className="p-2 text-white bg-primary_dark rounded-sm flex justify-center items-center gap-2"
                       disabled={uploading}
                     >
                       Create Account

@@ -51,7 +51,7 @@ const Login: FC = () => {
   return (
     <>
       <Navigation />
-      <div className="flex md:w-[80%] m-3 md:mx-auto my-20 gap-8 border-2 border-black p-5 rounded-sm">
+      <div className="flex md:w-[80%] m-3 md:mx-auto my-20 gap-8 shadow-md bg-white p-5 rounded-sm">
         <div className="flex flex-col gap-6 w-full md:w-[50%]">
           <div className="flex flex-col gap-2">
             <h1 className="font-bold text-3xl">Log In</h1>
@@ -90,7 +90,7 @@ const Login: FC = () => {
                   <div className="flex flex-col w-full gap-2">
                     <button
                       type="submit"
-                      className="p-2 text-white bg-black rounded-sm flex justify-center items-center gap-2"
+                      className="p-2 text-white bg-primary_dark rounded-sm flex justify-center items-center gap-2"
                       disabled={uploading}
                     >
                       Login

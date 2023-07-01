@@ -235,7 +235,7 @@ const Home: FC = () => {
             className="h-full w-full"
           />
           {/* <img src={carouselData[activeIndex].image} alt="!!" className="w-full" /> */}
-          <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50" />
+          <div className="absolute top-0 left-0 w-full h-full bg-primary_dark opacity-50" />
         </div>
         <div className="relative z-0 w-[90%] md:w-[70%] m-auto min-h-[300px] h-[60vh] flex flex-col justify-end text-primary_white">
           <div className="my-5 text-xl">
