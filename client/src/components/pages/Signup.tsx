@@ -51,6 +51,7 @@ const Signup: FC = () => {
       });
       userData?.setUser && userData.setUser(user);
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
     } catch (error) {
       console.log(error);
     }

@@ -10,7 +10,8 @@ export interface IRegistrationData {
   address?: string;
   mobile: string;
 }
-export interface IUserDocument extends IRegistrationData {
+export interface IUserDocument extends Partial<IRegistrationData> {
+  password?: string;
   createdAt?: string;
   updatedAt?: string;
   __v?: number;
@@ -35,9 +36,11 @@ export interface ILogin {
 // ---------------------- Input Field --------------
 export interface IInputFields {
   label: string;
-  placeholder: string;
+  placeholder?: string;
   isRequired?: boolean;
   uni: string;
+  disabled?: boolean;
+  value?: string | boolean;
 }
 // -------------------------------------------------
 
@@ -52,6 +55,12 @@ export interface INavigationCategory {
 }
 export interface IAccountNavigation {
   children: ReactNode;
-  activePage: string;
+  activePage: "personal" | "manageAddress" | "panCard" | "account" | "myOrders";
 }
 // -------------------------------------------------
+
+// ----------------- Account -----------------------
+export interface IPersonalInfo {
+  title: string;
+  fields: Array<IInputFields>;
+}

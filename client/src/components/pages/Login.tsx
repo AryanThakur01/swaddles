@@ -35,9 +35,9 @@ const Login: FC = () => {
           ...values,
         },
       });
-      console.log(user);
-      userData?.setUser && userData.setUser(user);
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      userData?.setUser && userData.setUser(user);
     } catch (error) {
       console.log(error);
     }

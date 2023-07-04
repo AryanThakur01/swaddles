@@ -1,4 +1,4 @@
-import { FC, createContext, useContext, useState } from "react";
+import { FC, createContext, useContext, useEffect, useState } from "react";
 import { IUserDocument } from "../interfaces/interface";
 import { PropsWithChildren } from "react";
 
@@ -18,6 +18,13 @@ const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     __v: 0,
     _id: "",
   });
+  useEffect(() => {
+    const user: string | null = localStorage.getItem("user");
+    if (user) {
+      const tempUser = JSON.parse(user);
+      setUser(tempUser);
+    }
+  }, []);
   return (
     <AuthContext.Provider value={{ ...user, setUser }}>
       {children}

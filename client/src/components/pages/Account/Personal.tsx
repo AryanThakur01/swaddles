@@ -1,57 +1,136 @@
-import { FC } from "react";
-import AccountNavigation from "../../UI/ProfileNavigation";
-import Navigation from "../../UI/Navigation";
+import { Form, Formik } from "formik";
+import { FC, useState } from "react";
 import { UserDetails } from "../../../context/AuthProvider";
-import { IUserDocument } from "../../../interfaces/interface";
+import { IUserDocument, IPersonalInfo } from "../../../interfaces/interface";
+import Navigation from "../../UI/Navigation";
+import AccountNavigation from "../../UI/ProfileNavigation";
 import Input from "../../UI/Input";
-import { Formik } from "formik";
-import { Form } from "react-router-dom";
 import * as yup from "yup";
 
 const Personal: FC = () => {
+  const [edit, setEdit] = useState("");
   const user: IUserDocument | undefined = UserDetails();
-  const detailUpdate = () => {};
-  const initialPersonalInformation = {
-    firstname: user?.firstname,
-    lastname: user?.lastname,
-  };
-  const personalInfoSchema = yup.object({
-    firstname: yup.string().required("Can't be Empty"),
-    lastname: yup.string().required("Can't be Empty"),
+  delete user?.setUser;
+
+  const formInputFields: Array<IPersonalInfo> = [
+    {
+      title: "Personal Information",
+      fields: [
+        {
+          uni: "firstname",
+          label: "First Name",
+          value: user?.firstname,
+          placeholder: "First Name",
+        },
+        {
+          uni: "lastname",
+          label: "Last Name",
+          value: user?.lastname,
+          placeholder: "Last Name",
+        },
+      ],
+    },
+    {
+      title: "Email Address",
+      fields: [
+        {
+          uni: "email",
+          label: "Email",
+          value: user?.firstname,
+          placeholder: "Enter Your Email Address",
+        },
+      ],
+    },
+    {
+      title: "Mobile Address",
+      fields: [
+        {
+          uni: "mobile",
+          label: "Mobile Number",
+          value: user?.mobile,
+          placeholder: "Enter Your Mobile Number",
+        },
+      ],
+    },
+  ];
+
+  const validationSchema = yup.object({
+    firstname: yup.string().required("Field Required"),
+    lastname: yup.string().required("Field Required"),
   });
-  const submitPersonalInfo = () => {};
+
+  const onsubmitHandler = async (values: IUserDocument) => {
+    console.log(values);
+  };
   return (
     <>
-      {console.log(UserDetails())}
       <Navigation />
       <AccountNavigation activePage="personal">
-        <div>
-          <div className="flex gap-5">
-            <h1 className="text-2xl">Personal Information</h1>
-            <button
-              type="button"
-              onClick={detailUpdate}
-              className="text-primary"
-            >
-              Edit
-            </button>
+        {user ? (
+          <div className="flex flex-col gap-10">
+            {formInputFields.map((category) => (
+              <div key={category.title}>
+                <Formik
+                  initialValues={user}
+                  onSubmit={onsubmitHandler}
+                  validationSchema={validationSchema}
+                  enableReinitialize
+                >
+                  {({ resetForm }) => {
+                    return (
+                      <>
+                        {/* {console.log(values)} */}
+                        <Form className="flex flex-col w-fit">
+                          <div className="flex gap-6">
+                            <h1 className="text-2xl">{category.title}</h1>
+                            <button
+                              className="text-primary"
+                              type="reset"
+                              onClick={() => {
+                                if (edit !== category.title)
+                                  setEdit(category.title);
+                                else setEdit("");
+                                resetForm();
+                              }}
+                            >
+                              {edit === category.title ? "Cancel" : "Edit"}
+                            </button>
+                          </div>
+                          <div className="flex gap-2 my-4">
+                            {category.fields.map((field) => (
+                              <div key={field.uni}>
+                                <Input
+                                  label={
+                                    category.title === edit ? field.label : ""
+                                  }
+                                  placeholder={field.placeholder}
+                                  uni={field.uni}
+                                  disabled={category.title !== edit}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                          <div>
+                            {category.title === edit && (
+                              <button
+                                type="submit"
+                                className="bg-primary self-end h-11 w-full text-primary_white font-semibold rounded-sm"
+                              >
+                                Save
+                              </button>
+                            )}
+                          </div>
+                        </Form>
+                      </>
+                    );
+                  }}
+                </Formik>
+              </div>
+            ))}
           </div>
-          <div className="flex gap-3">
-            <Formik
-              initialValues={initialPersonalInformation}
-              validationSchema={personalInfoSchema}
-              onSubmit={submitPersonalInfo}
-            >
-              <Form>
-                <Input
-                  label="FirstName"
-                  placeholder={`${user?.firstname}`}
-                  uni="firstname"
-                />
-              </Form>
-            </Formik>
-          </div>
-        </div>
+        ) : (
+          <div></div>
+        )}
       </AccountNavigation>
     </>
   );

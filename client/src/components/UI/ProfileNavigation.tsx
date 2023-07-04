@@ -14,7 +14,7 @@ const AccountNavigation: FC<IAccountNavigation> = ({
 }) => {
   return (
     <div className="flex gap-3 p-2 mt-20">
-      <div className="w-[25%] flex flex-col gap-3">
+      <div className="w-[25%] md:flex flex-col gap-3 hidden">
         <div className="gap-3 h-20 bg-white shadow-sm rounded-sm flex items-center p-2">
           <div className="text-4xl text-secondary_dark">
             <FaUserCircle />

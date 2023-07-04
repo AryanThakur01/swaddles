@@ -32,6 +32,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   if (!passwordVerification) throw new Error('Incorrect Password')
 
   const token: string = await user.createJWT()
+  user.password = ''
 
   res.status(200).json({ user, token })
 })
