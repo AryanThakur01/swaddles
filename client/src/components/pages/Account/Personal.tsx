@@ -6,6 +6,7 @@ import Navigation from "../../UI/Navigation";
 import AccountNavigation from "../../UI/ProfileNavigation";
 import Input from "../../UI/Input";
 import * as yup from "yup";
+import axios from "axios";
 
 const Personal: FC = () => {
   const [edit, setEdit] = useState("");
@@ -60,7 +61,18 @@ const Personal: FC = () => {
   });
 
   const onsubmitHandler = async (values: IUserDocument) => {
-    console.log(values);
+    delete values.password;
+    delete values.email;
+    try {
+      const { data: user } = await axios.put(
+        `${import.meta.env.VITE_BACKEND}/api/v1/userdata/update`,
+        { ...values }
+      );
+      localStorage.setItem("user", JSON.stringify(user._doc));
+      setEdit("");
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
@@ -96,7 +108,7 @@ const Personal: FC = () => {
                               {edit === category.title ? "Cancel" : "Edit"}
                             </button>
                           </div>
-                          <div className="flex gap-2 my-4">
+                          <div className="flex gap-2 my-4 flex-wrap">
                             {category.fields.map((field) => (
                               <div key={field.uni}>
                                 <Input
@@ -114,7 +126,7 @@ const Personal: FC = () => {
                             {category.title === edit && (
                               <button
                                 type="submit"
-                                className="bg-primary self-end h-11 w-full text-primary_white font-semibold rounded-sm"
+                                className="bg-primary self-end h-11 w-20 text-primary_white font-semibold rounded-sm"
                               >
                                 Save
                               </button>

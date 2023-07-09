@@ -59,14 +59,6 @@ const AccountNavigation: FC<IAccountNavigation> = ({
               >
                 Manage Address
               </Link>
-              <Link
-                to="/account/pancard"
-                className={`p-2 ${
-                  activePage === "panCard" && "bg-primary_white text-primary"
-                } hover:bg-primary_white hover:text-primary`}
-              >
-                PAN Card Information
-              </Link>
             </div>
             <hr />
           </div>

@@ -1,6 +1,6 @@
 import { FC } from "react";
-import Navigation from "../UI/Navigation";
-import AccountNavigation from "../UI/ProfileNavigation";
+import Navigation from "../../UI/Navigation";
+import AccountNavigation from "../../UI/ProfileNavigation";
 
 const Account: FC = () => {
   return (
@@ -8,7 +8,7 @@ const Account: FC = () => {
       <Navigation />
       <AccountNavigation activePage="account">
         <div className="flex justify-center items-center w-full h-full">
-          Welcome Aryan Thakur, Please Select What to do
+          Welcome Aryan Thakur, How may we help you?
         </div>
       </AccountNavigation>
     </>

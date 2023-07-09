@@ -1,4 +1,5 @@
-import { JsonWebKey } from 'crypto'
+import { Request } from 'express'
+import { JwtPayload } from 'jsonwebtoken'
 
 export interface CustomError extends Error {
   statusCode?: number
@@ -29,3 +30,6 @@ export interface IUserMethods {
 }
 
 // -------------------------------------------------------------
+export interface ICustomRequest extends Request {
+  payload?: string | JwtPayload
+}

@@ -35,7 +35,7 @@ UserSchema.methods.checkPassword = async function (enteredPassword: string) {
 UserSchema.methods.createJWT = async function () {
   const jwtSecret: string = process.env.JWT_SECRET || ''
   const jwtExpiry: string = process.env.JWT_LIFETIME || '10d'
-  return jwt.sign({ id: this._id }, jwtSecret, { expiresIn: jwtExpiry })
+  return jwt.sign({ _id: this._id }, jwtSecret, { expiresIn: jwtExpiry })
 }
 
 export default model<IUser, UserModel>('User', UserSchema)

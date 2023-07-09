@@ -2,10 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "./components/pages/Home";
 import Signup from "./components/pages/Signup";
 import Login from "./components/pages/Login";
-import Account from "./components/pages/Account";
+import Account from "./components/pages/Account/Account";
 import Personal from "./components/pages/Account/Personal";
 import ManageAddress from "./components/pages/Account/ManageAddress";
-import PanCard from "./components/pages/Account/PanCard";
 import MyOrders from "./components/pages/MyOrders";
 
 export default createBrowserRouter([
@@ -32,10 +31,6 @@ export default createBrowserRouter([
   {
     path: "/account/address",
     element: <ManageAddress />,
-  },
-  {
-    path: "/account/pancard",
-    element: <PanCard />,
   },
   {
     path: "/account/myOrders",

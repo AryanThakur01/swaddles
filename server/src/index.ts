@@ -5,6 +5,7 @@ import cors from 'cors'
 import errorHandlerMiddleware from './middleware/error_handler'
 import notFound from './middleware/notFound'
 import authRouter from './routes/auth'
+import userDataRouter from './routes/userData'
 import connectDb from './config/db'
 // ----------------------------------------------------------
 
@@ -19,6 +20,7 @@ app.use(
 
 // --------------------- End Points -------------------------
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/userdata', userDataRouter)
 // ----------------------------------------------------------
 
 // --------------------- Middlewares ------------------------
