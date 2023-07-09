@@ -29,7 +29,25 @@ export interface IUserMethods {
   createJWT: () => string
 }
 
+export interface IProducts {
+  product_name: string
+  product_category_tree: string
+  pid: string
+  retail_price: number
+  discounted_price: number
+  image: string
+  is_SWD_Advantage_product: boolean
+  description: string
+  product_rating: string
+  overall_rating: string
+  brand: string
+  product_specifications: string
+}
+
 // -------------------------------------------------------------
+
+// ---------------------- Custom Request -----------------------
 export interface ICustomRequest extends Request {
   payload?: string | JwtPayload
 }
+// -------------------------------------------------------------
