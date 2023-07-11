@@ -4,9 +4,12 @@ import { HiMenuAlt4, HiSearch, HiShoppingCart } from "react-icons/hi";
 import { GrClose, GrLogin, GrLogout } from "react-icons/gr";
 import { Link } from "react-router-dom";
 import { INavigationCategory } from "../../interfaces/interface";
+import axios from "axios";
 
 const Navigation: FC = () => {
   const [menu, setMenu] = useState(0);
+  const [isSearch, setIsSearch] = useState(false);
+  const [search, setSearch] = useState("");
 
   const navigationList: Array<INavigationCategory> = [
     { page: "Home", link: "/", logo: <FaHome />, displayTo: "all" },
@@ -48,6 +51,15 @@ const Navigation: FC = () => {
     else documentBody.overflowY = "scroll";
   }, [menu]);
 
+  const searchProduct = async() => {
+    console.log(search);
+    const products = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/v1/products/search?search=${search}`
+    );
+    console.log(products);
+    setSearch("");
+  };
+
   return (
     <>
       <div
@@ -71,10 +83,34 @@ const Navigation: FC = () => {
           </Link>
         )}
         {/* LOGO */}
-        <div className="tracking-widest">SWADDLES</div>
+        {/* <div className="tracking-widest">SWADDLES</div> */}
+
+        {isSearch ? (
+          <div className="flex gap-0 rounded-sm overflow-hidden">
+            <input
+              type="text"
+              name="product_search"
+              id="product_search"
+              className="outline-none bg-primary_white p-1 text-sm w-80"
+              placeholder="Enter the product brand and more"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && searchProduct()}
+            />
+            <button className="bg-primary_white px-2" onClick={searchProduct}>
+              <HiSearch />
+            </button>
+          </div>
+        ) : (
+          <div className="tracking-widest">SWADDLES</div>
+        )}
         <div className="flex items-center gap-3">
           {/* SEARCH */}
-          <button type="button" className="text-2xl hover:invert-[15%]">
+          <button
+            type="button"
+            className="text-2xl hover:invert-[15%]"
+            onClick={() => setIsSearch(!isSearch)}
+          >
             {/* <img src={Assets.search} alt="AT" className="h-8 p-1" /> */}
             <HiSearch />
           </button>
