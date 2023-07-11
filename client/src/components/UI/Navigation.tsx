@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { FaHome, FaRegAddressBook, FaUserCircle } from "react-icons/fa";
 import { HiMenuAlt4, HiSearch, HiShoppingCart } from "react-icons/hi";
 import { GrClose, GrLogin, GrLogout } from "react-icons/gr";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { INavigationCategory } from "../../interfaces/interface";
 import axios from "axios";
 
@@ -50,14 +50,22 @@ const Navigation: FC = () => {
     if (menu) documentBody.overflowY = "hidden";
     else documentBody.overflowY = "scroll";
   }, [menu]);
+  const navigate = useNavigate();
 
-  const searchProduct = async() => {
+  const searchProduct = async () => {
     console.log(search);
-    const products = await axios.get(
-      `${import.meta.env.VITE_BACKEND}/api/v1/products/search?search=${search}`
-    );
-    console.log(products);
-    setSearch("");
+    // const products = await axios.get(
+    //   `${
+    //     import.meta.env.VITE_BACKEND
+    //   }/api/v1/products/search?search=${search}&page=${1}&limit=${20}`
+    // );
+    // console.log(products);
+    // navigate({
+    //   pathname: "/productsDisplay",
+    //   search: `?search=${search}`,
+    // });
+    navigate(`/productsDisplay?search=${search}`);
+    window.location.reload();
   };
 
   return (
