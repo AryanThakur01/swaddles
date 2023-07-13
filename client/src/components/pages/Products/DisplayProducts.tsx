@@ -1,11 +1,11 @@
 import { FC, useEffect, useState } from "react";
-import Footer from "../UI/Footer";
-import Navigation from "../UI/Navigation";
-import ProductFilters from "../UI/ProductFilters";
-import DisplayCard from "../cards/DisplayCard";
+import Footer from "../../UI/Footer";
+import Navigation from "../../UI/Navigation";
+import ProductFilters from "../../UI/ProductFilters";
+import DisplayCard from "../../cards/DisplayCard";
 import axios from "axios";
-import { IProducts } from "../../interfaces/interface";
-import LoadingSkeleton from "../UI/LoadingSkeleton";
+import { IProducts } from "../../../interfaces/interface";
+import LoadingSkeleton from "../../UI/LoadingSkeleton";
 interface IDisplayProducts {}
 
 const DisplayProducts: FC<IDisplayProducts> = () => {

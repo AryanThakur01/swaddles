@@ -7,6 +7,9 @@ interface ISearchQuery {
   page?: string
   limit?: string
 }
+interface ISingleProductQuery {
+  _id?: string
+}
 
 export const getAllProducts = expressAsyncHandler(
   async (req: Request, res: Response) => {
@@ -54,5 +57,13 @@ export const getSearchedProduct = expressAsyncHandler(
       .limit(parseInt(limit))
 
     res.status(200).json({ ...productList })
+  }
+)
+
+export const getOneProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const { _id }: ISingleProductQuery = req.query
+    const product = await Products.find({ _id })
+    res.status(200).json({ ...product })
   }
 )

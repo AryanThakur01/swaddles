@@ -6,7 +6,7 @@ interface IProductFilterProps {
 
 const ProductFilters: FC<IProductFilterProps> = ({ children }) => {
   return (
-    <div className="flex gap-3 p-2 mt-20">
+    <div className="flex gap-3 p-2 my-20">
       <div className="w-[25%] p-3 flex-col gap-3 hidden md:flex bg-white shadow-sm min-h-full rounded-sm">
         <h1 className="text-xl">Filters</h1>
         <div></div>

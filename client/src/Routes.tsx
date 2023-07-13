@@ -6,8 +6,8 @@ import Account from "./components/pages/Account/Account";
 import Personal from "./components/pages/Account/Personal";
 import ManageAddress from "./components/pages/Account/ManageAddress";
 import MyOrders from "./components/pages/MyOrders";
-import Products from "./components/pages/Products/Products";
-import DisplayProducts from "./components/pages/DisplayProducts";
+import DisplayProducts from "./components/pages/Products/DisplayProducts";
+import Product from "./components/pages/Products/Product";
 
 export default createBrowserRouter([
   {
@@ -39,11 +39,11 @@ export default createBrowserRouter([
     element: <MyOrders />,
   },
   {
-    path: "/products",
-    element: <Products />,
+    path: "/productsdisplay",
+    element: <DisplayProducts />,
   },
   {
-    path: "/productsDisplay",
-    element: <DisplayProducts />,
+    path: "/product",
+    element: <Product />,
   },
 ]);

@@ -69,18 +69,18 @@ export interface IPersonalInfo {
 // ----------------- Product -----------------------
 export interface IProducts {
   _id: string;
-  __v: number;
+  __v?: number;
   product_name: string;
-  product_category_tree: Array<string>;
-  pid: string;
+  product_category_tree?: Array<string>;
+  pid?: string;
   retail_price: number;
   discounted_price: number;
   image: Array<string>;
   is_SWD_Advantage_product: boolean;
   description: string;
   product_rating: string;
-  overall_rating: string;
+  overall_rating?: string;
   brand: string;
-  product_specifications: string;
+  product_specifications?: string;
 }
 // -------------------------------------------------

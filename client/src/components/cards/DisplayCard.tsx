@@ -42,11 +42,12 @@ const DisplayCard: FC<IProducts> = ({
       <div className="flex flex-col gap-2">
         <h2 className="text-xl">{product_name}</h2>
         <div className="flex gap-4 px-2 flex-wrap">
-          {product_category_tree.map((category) => (
-            <p className="text-primary" key={category}>
-              {category}
-            </p>
-          ))}
+          {product_category_tree &&
+            product_category_tree.map((category) => (
+              <p className="text-primary" key={category}>
+                {category}
+              </p>
+            ))}
           {/* {console.log(product_category_tree)} */}
         </div>
         <div className="flex items-center space-x-1">
@@ -78,7 +79,7 @@ const DisplayCard: FC<IProducts> = ({
         </div>
         <p className="text-secondary_dark">
           {description.substring(0, 250)}...{" "}
-          <Link to={`/product?_id:${_id}`} className="text-primary underline">
+          <Link to={`/product?_id=${_id}`} className="text-primary underline">
             Read More
           </Link>
         </p>
@@ -96,9 +97,15 @@ const DisplayCard: FC<IProducts> = ({
           <button className="w-32 p-2 border border-primary text-primary font-bold rounded-sm">
             Add To Cart
           </button>
-          <button className="w-32 p-2 bg-primary text-primary_white font-bold rounded-sm">
+          {/* <button className="w-32 p-2 bg-primary text-primary_white font-bold rounded-sm">
             View Product
-          </button>
+          </button> */}
+          <Link
+            to={`/product?_id=${_id}`}
+            className="w-32 p-2 bg-primary text-center text-primary_white font-bold rounded-sm"
+          >
+            Read More
+          </Link>
         </div>
       </div>
     </div>
