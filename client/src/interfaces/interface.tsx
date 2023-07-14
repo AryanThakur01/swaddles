@@ -67,6 +67,10 @@ export interface IPersonalInfo {
 // -------------------------------------------------
 
 // ----------------- Product -----------------------
+interface productSpecs {
+  key?: string;
+  value?: string;
+}
 export interface IProducts {
   _id: string;
   __v?: number;
@@ -81,6 +85,6 @@ export interface IProducts {
   product_rating: string;
   overall_rating?: string;
   brand: string;
-  product_specifications?: string;
+  product_specifications?: string | Array<productSpecs>;
 }
 // -------------------------------------------------

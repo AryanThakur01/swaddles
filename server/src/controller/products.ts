@@ -64,6 +64,7 @@ export const getOneProduct = expressAsyncHandler(
   async (req: Request, res: Response) => {
     const { _id }: ISingleProductQuery = req.query
     const product = await Products.find({ _id })
-    res.status(200).json({ ...product })
+    // console.log(product)
+    res.status(200).json({ ...product[0] })
   }
 )
