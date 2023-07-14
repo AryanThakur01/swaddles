@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from "react";
 import Navigation from "../../UI/Navigation";
 import { getProductData } from "../../../context/ProductProvider";
-import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../../../node_modules/swiper/swiper.css";
 import { Autoplay, Pagination } from "swiper/modules";
 import "../../../../node_modules/swiper/modules/pagination.css";
 import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 import { getSingleProductApi } from "../../../Api/Products";
+import { useNavigate } from "react-router-dom";
 
 interface IProduct {}
 
@@ -15,28 +15,11 @@ const Product: FC<IProduct> = () => {
   const [showCompleteData, setShowCompleteData] = useState("");
   const CurrentProduct = getProductData();
   // const navigate = useNavigate();
-
+  const navigate = useNavigate();
   const getProduct = async () => {
     const _id = new URLSearchParams(location.search).get("_id");
     try {
       let data = await getSingleProductApi(_id);
-      // ------ Converting Items According to the need ------------
-      const image = data.image;
-      let categories = data.product_category_tree;
-      let specs: string = data.product_specifications;
-      data.product_category_tree = categories
-        .substring(2, categories.length - 2)
-        .split(" >> ");
-      specs = specs
-        .substring(specs.indexOf("[") + 1, specs.indexOf("]"))
-        .replaceAll('"=>"', '":"')
-        .replaceAll("}, {", "}-^-{");
-      let specList = specs.split("-^-");
-      specList.forEach((spec, i) => (specList[i] = JSON.parse(spec)));
-      data.image = image.substring(2, image.length - 2).split('", "');
-      data.product_specifications = specList;
-      // -----------------------------------------------------------
-
       if (CurrentProduct?.setProduct) CurrentProduct.setProduct(data);
     } catch (error) {
       console.log(error);
@@ -55,12 +38,12 @@ const Product: FC<IProduct> = () => {
     getProduct();
   }, []);
 
-  // const ReadMore = () => {
-  //   if (CurrentProduct?.product_specifications) {
-  //     const navLink = `/product/productspecs?product_specifications=${CurrentProduct.product_specifications.toString()}`;
-  //     navigate(navLink);
-  //   }
-  // };
+  const ReadMore = () => {
+    if (CurrentProduct) {
+      const navLink = `/product/productspecs?_id=${CurrentProduct._id}`;
+      navigate(navLink);
+    }
+  };
 
   return (
     <div>
@@ -148,8 +131,11 @@ const Product: FC<IProduct> = () => {
                     // >
                     //   Read More
                     // </Link>
-                    <button className="text-primary  w-fit m-auto">
-                      ReadMore
+                    <button
+                      className="text-primary  w-fit m-auto"
+                      onClick={ReadMore}
+                    >
+                      Read More
                     </button>
                   )}
               </div>

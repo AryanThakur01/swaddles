@@ -42,7 +42,7 @@ export const getSearchedProduct = expressAsyncHandler(
     if (typeof page === 'string' && typeof limit === 'string')
       skip = (parseInt(page) - 1) * parseInt(limit)
 
-    const productList = await Products.find({
+    let productList = await Products.find({
       $or: [
         {
           product_name: { $regex: search, $options: 'i' },
@@ -51,12 +51,11 @@ export const getSearchedProduct = expressAsyncHandler(
           product_category_tree: { $regex: search, $options: 'i' },
         },
       ],
-    })
-      .sort({ _id: 1 })
-      .skip(skip)
-      .limit(parseInt(limit))
+    }).sort({ _id: 1 })
+    const length = productList.length
+    productList = productList.slice(skip, skip + parseInt(limit))
 
-    res.status(200).json({ ...productList })
+    res.status(200).json({ productList, length })
   }
 )
 

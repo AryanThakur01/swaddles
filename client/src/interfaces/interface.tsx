@@ -67,7 +67,7 @@ export interface IPersonalInfo {
 // -------------------------------------------------
 
 // ----------------- Product -----------------------
-interface productSpecs {
+export interface IProductSpecs {
   key?: string;
   value?: string;
 }
@@ -85,6 +85,6 @@ export interface IProducts {
   product_rating: string;
   overall_rating?: string;
   brand: string;
-  product_specifications?: string | Array<productSpecs>;
+  product_specifications?: string | Array<IProductSpecs>;
 }
 // -------------------------------------------------
