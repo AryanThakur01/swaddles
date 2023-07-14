@@ -6,9 +6,8 @@ import Input from "../UI/Input";
 import { FC, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
-import { ILogin, IUserData, IUserDocument } from "../../interfaces/interface";
-import axios from "axios";
-import { UserDetails } from "../../context/AuthProvider";
+import { ILogin } from "../../interfaces/interface";
+import { loginUser } from "../../Api/User";
 
 const Login: FC = () => {
   const validationSchema = yup.object({
@@ -21,23 +20,13 @@ const Login: FC = () => {
   };
   const [uploading, setUploading] = useState(false);
 
-  const userData: IUserDocument | undefined = UserDetails();
+  // const userData: IUserDocument | undefined = UserDetails();
   const onSumitHandler = async (values: ILogin) => {
     setUploading(true);
     try {
-      const {
-        data: { user },
-        data: { token },
-      }: IUserData = await axios({
-        method: "post",
-        url: `${import.meta.env.VITE_BACKEND}/api/v1/auth/login`,
-        data: {
-          ...values,
-        },
-      });
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-      userData?.setUser && userData.setUser(user);
+      loginUser(values);
+      navigate("/");
+      // userData?.setUser && userData.setUser(user);
     } catch (error) {
       console.log(error);
     }
@@ -47,7 +36,7 @@ const Login: FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem("token")) navigate("/");
-  }, [userData]);
+  }, []);
   return (
     <>
       <Navigation />

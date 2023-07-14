@@ -6,13 +6,9 @@ import Input from "../UI/Input";
 import { FC, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
-import {
-  IRegistrationData,
-  IUserData,
-  IUserDocument,
-} from "../../interfaces/interface";
-import axios from "axios";
+import { IRegistrationData, IUserDocument } from "../../interfaces/interface";
 import { UserDetails } from "../../context/AuthProvider";
+import { registerUser } from "../../Api/User";
 
 const Signup: FC = () => {
   const validationSchema = yup.object({
@@ -36,28 +32,17 @@ const Signup: FC = () => {
   const [uploading, setUploading] = useState(false);
 
   const userData: IUserDocument | undefined = UserDetails();
+  const navigate = useNavigate();
   const onSumitHandler = async (values: IRegistrationData) => {
     setUploading(true);
     try {
-      const {
-        data: { user },
-        data: { token },
-      }: IUserData = await axios({
-        method: "post",
-        url: `${import.meta.env.VITE_BACKEND}/api/v1/auth/register`,
-        data: {
-          ...values,
-        },
-      });
-      userData?.setUser && userData.setUser(user);
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      await registerUser(values);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
     setUploading(false);
   };
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("token")) navigate("/");

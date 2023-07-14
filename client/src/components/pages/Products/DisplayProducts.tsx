@@ -3,9 +3,9 @@ import Footer from "../../UI/Footer";
 import Navigation from "../../UI/Navigation";
 import ProductFilters from "../../UI/ProductFilters";
 import DisplayCard from "../../cards/DisplayCard";
-import axios from "axios";
 import { IProducts } from "../../../interfaces/interface";
 import LoadingSkeleton from "../../UI/LoadingSkeleton";
+import { getProductsApi } from "../../../Api/Products";
 interface IDisplayProducts {}
 
 const DisplayProducts: FC<IDisplayProducts> = () => {
@@ -20,11 +20,7 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
     const search = params.get("search");
     const page = params.get("page");
     if (!search) return;
-    const { data } = await axios.get(
-      `${
-        import.meta.env.VITE_BACKEND
-      }/api/v1/products/search?search=${search}&page=${page || 1}&limit=${20}`
-    );
+    const data = await getProductsApi(search, page, 20);
     const dataList: Array<IProducts> = [];
     Object.keys(data).map((item) => {
       const image = data[item].image;
@@ -35,7 +31,7 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
       data[item].image = image.substring(2, image.length - 2).split('", "');
       dataList.push(data[item]);
     });
-    // console.log(dataList);
+    console.log(data);
     setProductList([...dataList]);
     setLoading(false);
   };

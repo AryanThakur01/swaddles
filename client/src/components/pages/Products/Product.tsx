@@ -6,8 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "../../../../node_modules/swiper/swiper.css";
 import { Autoplay, Pagination } from "swiper/modules";
 import "../../../../node_modules/swiper/modules/pagination.css";
-// import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
+import { getSingleProductApi } from "../../../Api/Products";
 
 interface IProduct {}
 
@@ -19,11 +19,7 @@ const Product: FC<IProduct> = () => {
   const getProduct = async () => {
     const _id = new URLSearchParams(location.search).get("_id");
     try {
-      let { data } = await axios.get(
-        `${import.meta.env.VITE_BACKEND}/api/v1/products/oneproduct?_id=${_id}`
-      );
-      data = data._doc;
-
+      let data = await getSingleProductApi(_id);
       // ------ Converting Items According to the need ------------
       const image = data.image;
       let categories = data.product_category_tree;
@@ -37,13 +33,11 @@ const Product: FC<IProduct> = () => {
         .replaceAll("}, {", "}-^-{");
       let specList = specs.split("-^-");
       specList.forEach((spec, i) => (specList[i] = JSON.parse(spec)));
-      // console.log(specList);
       data.image = image.substring(2, image.length - 2).split('", "');
       data.product_specifications = specList;
       // -----------------------------------------------------------
 
       if (CurrentProduct?.setProduct) CurrentProduct.setProduct(data);
-      // console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -97,7 +91,7 @@ const Product: FC<IProduct> = () => {
                   </SwiperSlide>
                 ))}
               </Swiper>
-              <div className="grid grid-cols-2 font-bold text-primary_white md:sticky bottom-0 z-30">
+              <div className="grid grid-cols-2 font-bold text-primary_white md:sticky fixed w-full bottom-0 left-0 z-30">
                 <button className="bg-success p-2 text-center flex justify-center items-center gap-2">
                   <FaShoppingBag /> Buy
                 </button>
