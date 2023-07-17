@@ -11,7 +11,7 @@ interface IDisplayProducts {}
 
 const DisplayProducts: FC<IDisplayProducts> = () => {
   const [pagesAvailable, setPagesAvailable] = useState<number>(1);
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(false);
   const [currentSearch, setCurrentSearch] = useState<string>("");
   const [productList, setProductList] = useState<
@@ -23,13 +23,14 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
     setLoading(true);
     const params = new URLSearchParams(location.search);
     const search = params.get("search");
+    const filter = params.get("filter");
     search && setCurrentSearch(search);
     const page = Number(params.get("page"));
     const limit = 20;
 
     if (!search) return;
 
-    let data = await getProductsApi(search, page, limit);
+    let data = await getProductsApi(search, page, limit, filter);
 
     const length = data.length;
     setPagesAvailable(Math.ceil(length / limit));
@@ -52,8 +53,11 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
   };
 
   const changePage = (newPage: number) => {
-    navigate(`/productsDisplay?search=${currentSearch}&page=${newPage}`);
-    location.reload();
+    const url = new URL(location.href);
+    url.searchParams.set("page", newPage.toString());
+    navigate(url.pathname + url.search);
+    setPage(newPage);
+    getSearchedProducts();
   };
 
   const NavigationButton = Array.from(
@@ -72,24 +76,27 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
               page === index + 1 ? "bg-primary text-white" : "bg-white "
             }`}
             onClick={() => changePage(index + 1)}
+            key={index}
           >
             {index + 1}
           </button>
         );
-      return (
-        <button
-          className={`h-1 w-1 rounded-sm ${
-            page === index + 1 ? "bg-primary text-white" : "bg-secondary_white"
-          }`}
-          onClick={() => changePage(index + 1)}
-        ></button>
-      );
+      else if (index <= page + 10 && index >= page - 10)
+        return (
+          <button
+            key={index}
+            className="text-xs"
+            onClick={() => changePage(index + 1)}
+          >
+            .
+          </button>
+        );
     }
   );
 
   useEffect(() => {
     const currentPage = new URLSearchParams(location.search).get("page");
-    setPage(Number(currentPage));
+    setPage(Number(currentPage || 1));
     getSearchedProducts();
   }, []);
 
@@ -119,7 +126,7 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
       <div className="flex justify-center gap-3 font-bold">
         <button
           className="text-primary bg-white px-3 rounded-full shadow-lg hover:bg-primary hover:text-white"
-          onClick={() => page > 0 && changePage(page - 1)}
+          onClick={() => page > 1 && changePage(page - 1)}
         >
           PREVIOUS
         </button>

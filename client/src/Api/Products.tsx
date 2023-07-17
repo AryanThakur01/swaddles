@@ -3,14 +3,13 @@ import axios from "axios";
 export const getProductsApi = async (
   search: string,
   page: number | null,
-  limit?: number
+  limit?: number,
+  filter?: string | null
 ) => {
   const { data } = await axios.get(
-    `${
-      import.meta.env.VITE_BACKEND
-    }/api/v1/products/search?search=${search}&page=${page || 1}&limit=${
-      limit || 20
-    }`
+    `${import.meta.env.VITE_BACKEND}/api/v1/products/search?search=${
+      search || " "
+    }&page=${page || 1}&limit=${limit || 20}&filter=${filter}`
   );
   return data;
 };
@@ -38,4 +37,15 @@ export const getSingleProductApi = async (_id: string | null) => {
   // -----------------------------------------------------------
 
   return { ...data };
+};
+
+export const getFilters = async () => {
+  const search = new URLSearchParams(location.search).get("search");
+  let { data } = await axios.get(
+    `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/products/getfilters/?search=${search}`
+  );
+  // console.log(data);
+  return data.filters;
 };

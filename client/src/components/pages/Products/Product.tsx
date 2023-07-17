@@ -8,6 +8,7 @@ import "../../../../node_modules/swiper/modules/pagination.css";
 import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 import { getSingleProductApi } from "../../../Api/Products";
 import { useNavigate } from "react-router-dom";
+import Footer from "../../UI/Footer";
 
 interface IProduct {}
 
@@ -48,7 +49,7 @@ const Product: FC<IProduct> = () => {
   return (
     <div>
       <Navigation />
-      <div className="my-20 p-4 w-[80%] m-auto flex md:flex-row flex-col gap-5 bg-white rounded-sm shadow-lg">
+      <div className="my-20 p-4 md:w-[80%] m-auto flex md:flex-row flex-col gap-5 bg-white rounded-sm shadow-lg">
         {CurrentProduct ? (
           <>
             <div className="md:max-w-[40%] border-2">
@@ -80,7 +81,7 @@ const Product: FC<IProduct> = () => {
                 </button>
                 <button className="bg-primary p-2 text-center flex justify-center items-center gap-2">
                   <FaShoppingCart />
-                  Cart
+                  Add To Cart
                 </button>
               </div>
             </div>
@@ -145,6 +146,7 @@ const Product: FC<IProduct> = () => {
           <></>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
