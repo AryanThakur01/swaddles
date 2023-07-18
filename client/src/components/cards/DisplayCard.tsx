@@ -7,10 +7,10 @@ interface IStar {
 
 const DisplayCard: FC<IProducts> = ({
   _id,
-  __v,
+  // __v,
   product_name,
   product_category_tree,
-  pid,
+  // pid,
   retail_price,
   discounted_price,
   image,
@@ -37,9 +37,11 @@ const DisplayCard: FC<IProducts> = ({
     );
   };
   return (
-    <div className="p-5 shadow-md gap-6 items-center flex md:flex-row flex-col rounded-md">
-      <img className="w-52" src={image[0]} alt="OFFLINE" />
-      <div className="flex flex-col gap-2">
+    <div className="p-5 shadow-md gap-6 items-center flex md:flex-row flex-col justify-between rounded-md">
+      <div className="md:w-[20%]">
+        <img className="max-h-60" src={image[0]} alt="OFFLINE" />
+      </div>
+      <div className="flex flex-col gap-2 md:w-[80%]">
         <h2 className="text-xl">{product_name}</h2>
         <div className="flex gap-4 px-2 flex-wrap">
           {product_category_tree &&

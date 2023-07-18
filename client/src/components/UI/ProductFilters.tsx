@@ -1,6 +1,7 @@
 import { FC, ReactNode, useEffect, useState } from "react";
 import { getFilters } from "../../Api/Products";
 import { useNavigate } from "react-router-dom";
+import { getProductData } from "../../context/ProductProvider";
 
 interface IProductFilterProps {
   children: ReactNode;
@@ -8,6 +9,7 @@ interface IProductFilterProps {
 
 const ProductFilters: FC<IProductFilterProps> = ({ children }) => {
   const [filterList, setFilterList] = useState<Array<string>>([]);
+  const [activeFilter, setActiveFilter] = useState<string | undefined>("");
 
   const filters = async () => {
     const data = await getFilters();
@@ -23,24 +25,44 @@ const ProductFilters: FC<IProductFilterProps> = ({ children }) => {
         tempFilterList[j].add(data[i][j]);
       }
     }
-    for (let i = tempFilterList.length - 1; i >= 0; i--) {
-      tempFilterList[i] = Array.from(tempFilterList[i]);
-      setFilterList([...tempFilterList[i]]);
-    }
+    const url = new URL(location.href);
+    // const filter = url.searchParams.get("filter");
+    // if (!filter) {
+    tempFilterList[0] = Array.from(tempFilterList[0]);
+    setFilterList([...tempFilterList[0]]);
+    // } else {
+    //   let i;
+    //   for (i = 0; i < tempFilterList.length; i++) {
+    //     if (tempFilterList[i].has(filter)) {
+    //       break;
+    //       // tempFilterList[i] = Array.from(tempFilterList[i]);
+    //       // setFilterList([...tempFilterList[i]]);
+    //     }
+    //   }
+    //   // console.log(tempFilterList[i + 1]);
+    //   tempFilterList[i + 1] = Array.from(tempFilterList[i + 1]);
+    //   setFilterList([...tempFilterList[i + 1]]);
+    // }
   };
   const navigate = useNavigate();
 
+  const products = getProductData();
+
   const filterData = (filter: string) => {
     const url = new URL(location.href);
+    setActiveFilter(filter);
+    filter = filter.split(" & ").join("-amp-");
     url.searchParams.set("filter", filter);
+    url.searchParams.set("page", "1");
     navigate(url.pathname + url.search);
-    // console.log(url.search);
-    // location.reload();
+    if (products?.getProductList) products.getProductList();
   };
 
   useEffect(() => {
+    const url = new URL(location.href);
+    setActiveFilter(url.searchParams.get("filter")?.split("-amp-").join(" & "));
     filters();
-  }, []);
+  }, [activeFilter]);
   return (
     <div className="flex gap-3 p-2 my-20">
       <div className="w-[25%] p-3 flex-col gap-3 max-w-sm hidden md:flex bg-white shadow-sm h-fit rounded-sm">
@@ -48,10 +70,14 @@ const ProductFilters: FC<IProductFilterProps> = ({ children }) => {
         <hr />
         <div className="flex flex-col gap-3"></div>
         <div className="flex flex-col gap-1">
-          <h2 className="text-xs font-bold my-3">CATEGORIES</h2>
+          <h2 className="text-xs font-bold my-3">
+            {activeFilter ? activeFilter.toUpperCase() : "CATEGORIES"}
+          </h2>
           {filterList.map((filter) => (
             <button
-              className="text-start text-sm mx-2 text-ellipsis overflow-hidden whitespace-nowrap hover:font-bold"
+              className={`text-start text-sm mx-2 text-ellipsis overflow-hidden whitespace-nowrap hover:font-bold ${
+                activeFilter === filter && "font-bold"
+              }`}
               value={filter}
               key={filter}
               onClick={() => filterData(filter)}

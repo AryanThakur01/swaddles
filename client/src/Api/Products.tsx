@@ -6,6 +6,7 @@ export const getProductsApi = async (
   limit?: number,
   filter?: string | null
 ) => {
+  filter = filter?.split("-amp-").join(" & ");
   const { data } = await axios.get(
     `${import.meta.env.VITE_BACKEND}/api/v1/products/search?search=${
       search || " "

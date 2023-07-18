@@ -30,9 +30,8 @@ export const getSearchedProduct = expressAsyncHandler(
       skip = (parseInt(page) - 1) * parseInt(limit)
 
     let productList
-    if (filter !== 'null') {
-      // console.log(filter)
-      console.log(req.query)
+    console.log(filter)
+    if (filter !== 'undefined' && filter !== 'null') {
       productList = await Products.find({
         $and: [
           {

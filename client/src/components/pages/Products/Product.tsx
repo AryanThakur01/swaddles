@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import Navigation from "../../UI/Navigation";
-import { getProductData } from "../../../context/ProductProvider";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../../../node_modules/swiper/swiper.css";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -9,19 +8,21 @@ import { FaShoppingBag, FaShoppingCart } from "react-icons/fa";
 import { getSingleProductApi } from "../../../Api/Products";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../UI/Footer";
+import { IProducts } from "../../../interfaces/interface";
 
 interface IProduct {}
 
 const Product: FC<IProduct> = () => {
   const [showCompleteData, setShowCompleteData] = useState("");
-  const CurrentProduct = getProductData();
-  // const navigate = useNavigate();
+  const [CurrentProduct, setCurrentProduct] = useState<IProducts | undefined>();
+  // const CurrentProduct = getProductData();
+
   const navigate = useNavigate();
   const getProduct = async () => {
     const _id = new URLSearchParams(location.search).get("_id");
     try {
       let data = await getSingleProductApi(_id);
-      if (CurrentProduct?.setProduct) CurrentProduct.setProduct(data);
+      setCurrentProduct(data);
     } catch (error) {
       console.log(error);
     }
