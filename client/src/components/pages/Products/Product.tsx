@@ -9,6 +9,7 @@ import { getSingleProductApi } from "../../../Api/Products";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../UI/Footer";
 import { IProducts } from "../../../interfaces/interface";
+import { addToCartApi } from "../../../Api/Cart";
 
 interface IProduct {}
 
@@ -47,6 +48,12 @@ const Product: FC<IProduct> = () => {
     }
   };
 
+  const addProductToCart = () => {
+    const item = new URLSearchParams(location.search).get("_id");
+    const quantity = 1;
+    if (item) addToCartApi(item, quantity);
+  };
+
   return (
     <div>
       <Navigation />
@@ -80,7 +87,10 @@ const Product: FC<IProduct> = () => {
                 <button className="bg-success p-2 text-center flex justify-center items-center gap-2">
                   <FaShoppingBag /> Buy
                 </button>
-                <button className="bg-primary p-2 text-center flex justify-center items-center gap-2">
+                <button
+                  className="bg-primary p-2 text-center flex justify-center items-center gap-2"
+                  onClick={addProductToCart}
+                >
                   <FaShoppingCart />
                   Add To Cart
                 </button>

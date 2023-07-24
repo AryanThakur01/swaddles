@@ -1,9 +1,7 @@
 import axios from "axios";
-import { ICart } from "../interfaces/interface";
 
-export const AddToCartApi = async ({ item, quantity }: ICart) => {
+export const addToCartApi = async (item: string, quantity: number) => {
   const authHeader = "Bearer " + localStorage.getItem("token");
-  console.log(authHeader);
   const { data } = await axios({
     method: "post",
     url: `${import.meta.env.VITE_BACKEND}/api/v1/cart/addtocart`,
@@ -15,6 +13,7 @@ export const AddToCartApi = async ({ item, quantity }: ICart) => {
       Authorization: authHeader,
     },
   });
+  console.log(data._doc);
   return data;
 };
 
@@ -31,7 +30,7 @@ export const getCartApi = async () => {
 
   // ------ Converting Data For The Application ------------
   for (let i = 0; i < data.length; i++) {
-    let item = data[0].item;
+    let item = data[i].item;
     const image = item.image;
     // let categories = item.product_category_tree;
     // let specs: string = item.product_specifications;
