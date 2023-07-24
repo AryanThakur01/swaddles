@@ -7,6 +7,7 @@ import notFound from './middleware/notFound'
 import authRouter from './routes/auth'
 import userDataRouter from './routes/userData'
 import productsRouter from './routes/products'
+import cartsRouter from './routes/cart'
 import connectDb from './config/db'
 // ----------------------------------------------------------
 
@@ -23,6 +24,7 @@ app.use(
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/userdata', userDataRouter)
 app.use('/api/v1/products', productsRouter)
+app.use('/api/v1/cart', cartsRouter)
 // ----------------------------------------------------------
 
 // --------------------- Middlewares ------------------------

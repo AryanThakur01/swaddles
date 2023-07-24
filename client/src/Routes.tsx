@@ -9,6 +9,7 @@ import MyOrders from "./components/pages/MyOrders";
 import DisplayProducts from "./components/pages/Products/DisplayProducts";
 import Product from "./components/pages/Products/Product";
 import ProductSpecs from "./components/pages/Products/ProductSpecs";
+import Cart from "./components/pages/Cart/Cart";
 
 export default createBrowserRouter([
   {
@@ -50,5 +51,9 @@ export default createBrowserRouter([
   {
     path: "/product/productspecs",
     element: <ProductSpecs />,
+  },
+  {
+    path: "/cart",
+    element: <Cart />,
   },
 ]);

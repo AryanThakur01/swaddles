@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 import User from '../models/users'
 import { ICustomRequest } from '../config/Interfaces'

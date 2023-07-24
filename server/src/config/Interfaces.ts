@@ -1,5 +1,6 @@
 import { Request } from 'express'
 import { JwtPayload } from 'jsonwebtoken'
+import mongoose from 'mongoose'
 
 export interface CustomError extends Error {
   statusCode?: number
@@ -42,6 +43,12 @@ export interface IProducts {
   overall_rating: string
   brand: string
   product_specifications: string
+}
+
+export interface ICart {
+  user: mongoose.Schema.Types.ObjectId
+  item: mongoose.Schema.Types.ObjectId
+  quantity: number
 }
 
 // -------------------------------------------------------------

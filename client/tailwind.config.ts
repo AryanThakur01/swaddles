@@ -12,6 +12,7 @@ export default {
         tertiary_dark: "#4B5563",
         primary: "#0D6EFD",
         success: "#38A169",
+        danger: "#E53E3E",
       },
       keyframes: {
         popup: {

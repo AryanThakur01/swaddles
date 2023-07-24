@@ -7,6 +7,7 @@ const errorHandlerMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err)
   let customError = {
     message:
       err.message.split(':')[0] ||

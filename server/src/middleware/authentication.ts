@@ -1,10 +1,10 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
 import { ICustomRequest } from '../config/Interfaces'
 
 const authentication = expressAsyncHandler(
-  async (req: ICustomRequest, res: Response, next: NextFunction) => {
+  async (req: ICustomRequest, _, next: NextFunction) => {
     const authHeader: string | undefined = req.headers.authorization
     if (!authHeader || !authHeader.startsWith('Bearer'))
       throw new Error('Invalid Authentication')
