@@ -6,6 +6,6 @@ const router = Router()
 
 // router.route('/').get(AddToCart)
 router.route('/addtocart').post(authentication, AddToCart)
-router.route('/getCart').get(authentication, GetCart)
+router.route('/getcart').get(authentication, GetCart)
 
 export default router

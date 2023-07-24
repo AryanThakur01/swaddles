@@ -1,8 +1,14 @@
+import { useEffect } from "react";
 import Footer from "../../UI/Footer";
 import Navigation from "../../UI/Navigation";
 import OrderCard from "../../cards/OrderCard";
+import { getCartApi } from "../../../Api/Cart";
 
 const Cart = () => {
+  useEffect(() => {
+    getCartApi();
+  });
+
   return (
     <div>
       <Navigation />

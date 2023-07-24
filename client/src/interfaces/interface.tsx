@@ -88,3 +88,10 @@ export interface IProducts {
   product_specifications?: string | Array<IProductSpecs>;
 }
 // -------------------------------------------------
+
+// ------------------- Cart ------------------------
+export interface ICart {
+  item: string;
+  quantity: number;
+}
+// -------------------------------------------------
