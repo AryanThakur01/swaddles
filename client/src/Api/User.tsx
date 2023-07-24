@@ -1,9 +1,5 @@
 import axios from "axios";
-import {
-  ILogin,
-  IRegistrationData,
-  IUserData,
-} from "../interfaces/interface";
+import { ILogin, IRegistrationData, IUserData } from "../interfaces/interface";
 
 export const registerUser = async (values: IRegistrationData) => {
   const {

@@ -36,7 +36,7 @@ export const GetCart = expressAsyncHandler(
       throw new Error('Improper Payload Recieved')
 
     const filter = { user: payload._id }
-    const cart = await Cart.find(filter)
+    const cart = await Cart.find(filter).populate('item')
 
     res.status(200).json(cart)
   }

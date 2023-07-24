@@ -1,21 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../../UI/Footer";
 import Navigation from "../../UI/Navigation";
 import OrderCard from "../../cards/OrderCard";
 import { getCartApi } from "../../../Api/Cart";
+import { ICart } from "../../../interfaces/interface";
+import LoadingSkeleton from "../../UI/LoadingSkeleton";
 
 const Cart = () => {
+  const [orderList, setOrderList] = useState<ICart[]>();
+  const getCartProducts = async () => {
+    const cart = await getCartApi();
+    setOrderList(cart);
+  };
   useEffect(() => {
-    getCartApi();
-  });
+    getCartProducts();
+  }, []);
 
   return (
     <div>
       <Navigation />
       <div className="my-20 mx-4 grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="bg-white p-3 md:col-span-2 rounded-sm flex flex-col gap-3 shadow-md">
-          <OrderCard />
-          <OrderCard />
+          {!orderList ? (
+            <>
+              <LoadingSkeleton />
+            </>
+          ) : (
+            orderList.map((product: ICart) => (
+              <OrderCard
+                key={product.item._id}
+                {...product.item}
+                quantity={product.quantity}
+              />
+            ))
+          )}
         </div>
         <div className="bg-white p-3 rounded-sm shadow-md">
           <div className="bg-primary_white w-full h-full rounded-sm p-3 shadow-inner">

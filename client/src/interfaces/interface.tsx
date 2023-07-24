@@ -91,7 +91,7 @@ export interface IProducts {
 
 // ------------------- Cart ------------------------
 export interface ICart {
-  item: string;
+  item: IProducts;
   quantity: number;
 }
 // -------------------------------------------------
