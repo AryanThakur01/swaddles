@@ -12,8 +12,10 @@ const Cart = () => {
   const [discountPrice, setDiscountPrice] = useState<number>(0);
   const [deliveryCharges, setDeliveryCharges] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
+  const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
 
   const getCartProducts = async () => {
+    setSearchingProducts(true);
     const cart: ICart[] = await getCartApi();
     let tempRetailPrice = 0;
     let tempDiscountPrice = 0;
@@ -25,13 +27,14 @@ const Cart = () => {
       tempDiscountPrice += item.discounted_price * cart[i].quantity;
     }
     let tempDeliveryCharges =
-      tempRetailPrice - tempDiscountPrice >= 400 ? 0 : 40;
+      tempRetailPrice - tempDiscountPrice <= 400 ? 0 : 40;
 
     setOrderList(cart);
     setRetailPrice(tempRetailPrice);
     setDiscountPrice(tempDiscountPrice);
     setDeliveryCharges(tempDeliveryCharges);
     setQuantity(tempQuantity);
+    setSearchingProducts(false);
   };
   useEffect(() => {
     getCartProducts();
@@ -40,10 +43,14 @@ const Cart = () => {
   return (
     <div>
       <Navigation />
+
       <div className="my-20 mx-4 grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="bg-white p-3 md:col-span-2 rounded-sm flex flex-col gap-3 shadow-md">
-          {!orderList ? (
+          {!orderList || searchingProducts ? (
             <>
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
               <LoadingSkeleton />
             </>
           ) : (
@@ -52,6 +59,8 @@ const Cart = () => {
                 key={product.item._id}
                 {...product.item}
                 quantity={product.quantity}
+                uniqueId={product._id ? product._id : ""}
+                getCartProducts={getCartProducts}
               />
             ))
           )}

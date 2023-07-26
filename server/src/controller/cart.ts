@@ -28,6 +28,24 @@ export const AddToCart = expressAsyncHandler(
   }
 )
 
+export const RemoveFromCart = expressAsyncHandler(
+  async (req: ICustomRequest, res: Response) => {
+    const { _id } = req.query
+    const { payload } = req
+
+    let userId: string
+    if (!payload || typeof payload === 'string')
+      throw new Error('Improper Payload Recieved')
+
+    userId = payload._id
+    const filter = { user: userId, _id }
+    console.log(filter)
+    const cart = await Cart.findOneAndDelete(filter)
+    console.log(cart)
+    res.status(200).json({ ...cart })
+  }
+)
+
 export const GetCart = expressAsyncHandler(
   async (req: ICustomRequest, res: Response) => {
     const { payload } = req

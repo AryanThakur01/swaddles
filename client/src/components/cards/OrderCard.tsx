@@ -2,9 +2,12 @@ import { FC, useState } from "react";
 import { FaMinus, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 import { IProducts } from "../../interfaces/interface";
 import { Link } from "react-router-dom";
+import { removeFromCartApi } from "../../Api/Cart";
 
 interface IOrderCard extends Partial<IProducts> {
   quantity: number;
+  uniqueId: string;
+  getCartProducts: () => Promise<void>;
 }
 
 const OrderCard: FC<IOrderCard> = ({
@@ -15,8 +18,20 @@ const OrderCard: FC<IOrderCard> = ({
   discounted_price,
   product_name,
   retail_price,
+  uniqueId,
+  getCartProducts,
 }) => {
-  const [displayQuantity, setDisplayQuantity] = useState(quantity | 1);
+  const [displayQuantity, setDisplayQuantity] = useState<number>(quantity | 1);
+
+  const updateProduct = (quantity: number) => {
+    setDisplayQuantity(quantity);
+  };
+  const removeFromCart = async () => {
+    if (typeof _id !== "string") return;
+    const isRemoved = await removeFromCartApi(uniqueId);
+    if (isRemoved._doc) getCartProducts();
+  };
+
   return (
     <div className="grid md:grid-cols-3 grid-cols-1 rounded-sm p-2 gap-3 bg-primary_white shadow-inner">
       <div className="w-full flex justify-center items-center md:max-h-48">
@@ -35,6 +50,7 @@ const OrderCard: FC<IOrderCard> = ({
           <button
             type="button"
             className="text-danger rounded-sm flex items-center gap-3"
+            onClick={removeFromCart}
           >
             <p>Remove</p>
             <FaRegTrashAlt />
@@ -72,7 +88,7 @@ const OrderCard: FC<IOrderCard> = ({
             type="button"
             className="px-3 bg-white rounded-sm text-xs"
             onClick={() =>
-              displayQuantity !== 1 && setDisplayQuantity(displayQuantity - 1)
+              displayQuantity !== 1 && updateProduct(displayQuantity - 1)
             }
           >
             <FaMinus />
@@ -84,13 +100,13 @@ const OrderCard: FC<IOrderCard> = ({
             className="w-16 outline-none shadow-sm rounded-sm text-center"
             value={displayQuantity}
             onChange={({ target }) => {
-              setDisplayQuantity(Number(target.value));
+              updateProduct(Number(target.value));
             }}
           />
           <button
             type="button"
             className="px-3 bg-white rounded-sm text-xs"
-            onClick={() => setDisplayQuantity(displayQuantity + 1)}
+            onClick={() => updateProduct(displayQuantity + 1)}
           >
             <FaPlus />
           </button>

@@ -91,6 +91,7 @@ export interface IProducts {
 
 // ------------------- Cart ------------------------
 export interface ICart {
+  _id?: string;
   item: IProducts;
   quantity: number;
 }

@@ -13,7 +13,20 @@ export const addToCartApi = async (item: string, quantity: number) => {
       Authorization: authHeader,
     },
   });
-  console.log(data._doc);
+  return data;
+};
+
+export const removeFromCartApi = async (item: string) => {
+  const authHeader = "Bearer " + localStorage.getItem("token");
+  const { data } = await axios({
+    method: "delete",
+    url: `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/cart/removefromcart?_id=${item}`,
+    headers: {
+      Authorization: authHeader,
+    },
+  });
   return data;
 };
 
