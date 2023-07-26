@@ -23,7 +23,7 @@ const OrderCard: FC<IOrderCard> = ({
         {image && (
           <img
             // src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHJvZHVjdHxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80"
-            src={image[3]}
+            src={image[0]}
             alt="Image Not Available"
             className="rounded-sm md:max-h-48"
           />

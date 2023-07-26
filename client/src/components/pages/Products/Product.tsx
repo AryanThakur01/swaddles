@@ -104,14 +104,15 @@ const Product: FC<IProduct> = () => {
                 {showCompleteData === "description"
                   ? CurrentProduct.description
                   : CurrentProduct.description.substring(0, 300)}
-                {showCompleteData !== "description" && (
-                  <button
-                    className="text-primary"
-                    onClick={() => setShowCompleteData("description")}
-                  >
-                    ...Read More
-                  </button>
-                )}
+                {CurrentProduct.description.length >= 300 &&
+                  showCompleteData !== "description" && (
+                    <button
+                      className="text-primary"
+                      onClick={() => setShowCompleteData("description")}
+                    >
+                      ...Read More
+                    </button>
+                  )}
               </p>
               <div className="flex gap-3 text-secondary_dark">
                 <p className="font-bold text-3xl">
