@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import Navigation from "../UI/Navigation.tsx";
 import Offer from "../cards/Product.tsx";
 import Footer from "../UI/Footer.tsx";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Keyboard, Pagination } from "swiper/modules";
 
 const Home: FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -181,15 +183,15 @@ const Home: FC = () => {
     },
   ];
 
-  const carouselNext = () => {
-    if (activeIndex < carouselData.length - 1) setActiveIndex(activeIndex + 1);
-    else setActiveIndex(0);
-  };
-  const carouselPrevious = () => {
-    // console.log(activeIndex);
-    if (activeIndex > 0) setActiveIndex(activeIndex - 1);
-    else setActiveIndex(carouselData.length - 1);
-  };
+  // const carouselNext = () => {
+  //   if (activeIndex < carouselData.length - 1) setActiveIndex(activeIndex + 1);
+  //   else setActiveIndex(0);
+  // };
+  // const carouselPrevious = () => {
+  //   // console.log(activeIndex);
+  //   if (activeIndex > 0) setActiveIndex(activeIndex - 1);
+  //   else setActiveIndex(carouselData.length - 1);
+  // };
 
   const scrollRight = (ElementId: string, scrollValue = 0) => {
     const element = document.querySelector(ElementId);
@@ -206,12 +208,24 @@ const Home: FC = () => {
     else if (element && w) element.scrollLeft -= w + 100;
   };
 
+  const pagination = {
+    clickable: true,
+    renderBullet: (index: number, className: string) => {
+      // return '<span class="' + className + '">' + (index + 1) + "</span>";
+      return (
+        '<span  class="' +
+        className +
+        ` bg-success p-2" value={${index}}></span>`
+      );
+    },
+  };
+
   return (
     <div className="m-auto">
       <Navigation />
 
       {/* CAROUSEL */}
-      <div className="absolute w-[100vw] top-[25%] z-10 hidden md:flex justify-between">
+      {/* <div className="absolute w-[100vw] top-[25%] z-10 hidden md:flex justify-between">
         <button
           type="button"
           className="m-5 rounded-md py-5 px-1 text-3xl"
@@ -226,31 +240,30 @@ const Home: FC = () => {
         >
           {">"}
         </button>
-      </div>
-      <div>
-        <div className="absolute top-0 left-0 w-full h-[70vh] min-h-[350px] overflow-y-hidden flex md:items-center">
+      </div> */}
+      {/* <div>
+        <div classname="absolute top-0 left-0 w-full h-[70vh] min-h-[350px] overflow-y-hidden flex md:items-center">
           <div
             style={{
-              background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`,
+              background: `url(${carouseldata[activeindex].image}) no-repeat center center/cover`,
             }}
-            className="h-full w-full"
+            classname="h-full w-full"
           />
-          {/* <img src={carouselData[activeIndex].image} alt="!!" className="w-full" /> */}
-          <div className="absolute top-0 left-0 w-full h-full bg-primary_dark opacity-50" />
+          <div classname="absolute top-0 left-0 w-full h-full bg-primary_dark opacity-50" />
         </div>
-        <div className="relative z-0 w-[90%] md:w-[70%] m-auto min-h-[300px] h-[60vh] flex flex-col justify-end text-primary_white">
-          <div className="my-5 text-xl">
-            {carouselData[activeIndex].shortDescription}
+        <div classname="relative z-0 w-[90%] md:w-[70%] m-auto min-h-[300px] h-[60vh] flex flex-col justify-end text-primary_white">
+          <div classname="my-5 text-xl">
+            {carouseldata[activeindex].shortdescription}
           </div>
           <button
-            className="border-2 border-secondary_white w-40 p-1 rounded-[4px]"
+            classname="border-2 border-secondary_white w-40 p-1 rounded-[4px]"
             type="button"
           >
-            VIEW PRODUCT
+            view product
           </button>
         </div>
-      </div>
-      <div className="flex relative w-fit z-10 m-auto gap-2 items-center my-20">
+      </div> */}
+      {/* <div className="flex relative w-fit z-10 m-auto gap-2 items-center my-20">
         {carouselData.map((item, i) => (
           <button
             key={item.id}
@@ -262,7 +275,31 @@ const Home: FC = () => {
             } bg-secondary_dark`}
           />
         ))}
-      </div>
+      </div> */}
+
+      <Swiper
+        modules={[Autoplay, Pagination]}
+        pagination={pagination}
+        loop={true}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+      >
+        {carouselData.map((item) => (
+          <SwiperSlide>
+            <div
+              style={{
+                background: `url(${item.image}) no-repeat center center/cover`,
+              }}
+            >
+              <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
+                <p>{item.shortDescription}</p>
+                <button className="w-52 border border-secondary_white p-1 rounded font-bold">
+                  View Product
+                </button>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
 
       {/* OFFERS */}
       <div className="overflow-x-hidden py-4 px-[5%] md:px-[16%] m-auto">
