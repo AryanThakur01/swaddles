@@ -1,12 +1,16 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Navigation from "../UI/Navigation.tsx";
 import Offer from "../cards/Product.tsx";
 import Footer from "../UI/Footer.tsx";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard, Pagination } from "swiper/modules";
+import { getHomePageData } from "../../Api/Home.tsx";
+import { IProducts } from "../../interfaces/interface.tsx";
+import { useNavigate } from "react-router-dom";
 
 const Home: FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [carousel, setCarousel] = useState<IProducts[]>();
 
   const carouselData = [
     {
@@ -220,6 +224,21 @@ const Home: FC = () => {
     },
   };
 
+  const homePageData = async () => {
+    const data = await getHomePageData();
+    data.carouselData = data.carouselData.slice(0, 6);
+    setCarousel([...data.carouselData]);
+  };
+
+  const navigate = useNavigate();
+  const showProduct = (_id: string) => {
+    navigate(`/product?_id=${_id}`);
+  };
+
+  useEffect(() => {
+    homePageData();
+  }, []);
+
   return (
     <div className="m-auto">
       <Navigation />
@@ -283,22 +302,26 @@ const Home: FC = () => {
         loop={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
       >
-        {carouselData.map((item) => (
-          <SwiperSlide>
-            <div
-              style={{
-                background: `url(${item.image}) no-repeat center center/cover`,
-              }}
-            >
-              <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
-                <p>{item.shortDescription}</p>
-                <button className="w-52 border border-secondary_white p-1 rounded font-bold">
-                  View Product
-                </button>
+        {carousel &&
+          carousel.map((item) => (
+            <SwiperSlide key={item._id}>
+              <div
+                style={{
+                  background: `url(${item.image[0]}) no-repeat bottom/cover`,
+                }}
+              >
+                <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
+                  <p>{item.brand}</p>
+                  <button
+                    className="w-52 border border-secondary_white p-1 rounded font-bold"
+                    onClick={() => showProduct(item._id)}
+                  >
+                    View Product
+                  </button>
+                </div>
               </div>
-            </div>
-          </SwiperSlide>
-        ))}
+            </SwiperSlide>
+          ))}
       </Swiper>
 
       {/* OFFERS */}

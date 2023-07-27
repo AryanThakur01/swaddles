@@ -8,6 +8,7 @@ import authRouter from './routes/auth'
 import userDataRouter from './routes/userData'
 import productsRouter from './routes/products'
 import cartsRouter from './routes/cart'
+import suggestedRouter from './routes/suggested'
 import connectDb from './config/db'
 // ----------------------------------------------------------
 
@@ -21,6 +22,7 @@ app.use(
 )
 
 // --------------------- End Points -------------------------
+app.use('/api/v1/suggested', suggestedRouter)
 app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/userdata', userDataRouter)
 app.use('/api/v1/products', productsRouter)
