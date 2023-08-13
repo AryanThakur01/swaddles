@@ -10,6 +10,7 @@ import DisplayProducts from "./components/pages/Products/DisplayProducts";
 import Product from "./components/pages/Products/Product";
 import ProductSpecs from "./components/pages/Products/ProductSpecs";
 import Cart from "./components/pages/Cart/Cart";
+import CheckoutPage from "./components/pages/Checkout/CheckoutPage"
 
 export default createBrowserRouter([
   {
@@ -56,4 +57,8 @@ export default createBrowserRouter([
     path: "/cart",
     element: <Cart />,
   },
+  {
+    path: "/checkout",
+    element: <CheckoutPage />
+  }
 ]);

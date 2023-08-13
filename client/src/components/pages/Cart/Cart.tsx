@@ -5,6 +5,7 @@ import OrderCard from "../../cards/OrderCard";
 import { getCartApi } from "../../../Api/Cart";
 import { ICart } from "../../../interfaces/interface";
 import LoadingSkeleton from "../../UI/LoadingSkeleton";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const [orderList, setOrderList] = useState<ICart[]>();
@@ -14,6 +15,12 @@ const Cart = () => {
   const [quantity, setQuantity] = useState<number>(0);
   const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
 
+  const checkoutHandler = () => {
+    if (!orderList) return;
+    for (let i = orderList.length; i > 0; i--) {
+      console.log(orderList[i - 1]);
+    }
+  };
   const getCartProducts = async () => {
     setSearchingProducts(true);
     const cart: ICart[] = await getCartApi();
@@ -99,6 +106,14 @@ const Cart = () => {
               You will save <b>₹ {retailPrice - discountPrice}</b> on this
               purchase
             </p>
+            {orderList && (
+              <button
+                className="bg-success p-2 my-10 w-full text-xl text-primary_white font-bold"
+                onClick={checkoutHandler}
+              >
+                Checkout
+              </button>
+            )}
           </div>
         </div>
       </div>

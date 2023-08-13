@@ -18,7 +18,6 @@ const authentication = expressAsyncHandler(
       req.payload = payload
       next()
     } catch (error) {
-      console.log('error')
       throw new Error('Not authorized for this feature')
     }
   }
