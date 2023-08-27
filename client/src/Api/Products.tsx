@@ -15,6 +15,11 @@ export const getProductsApi = async (
   return data;
 };
 
+export const getProductList = async (searchList: string)=>{
+  const {data} = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/products/getproductlist?products=${searchList}`);
+  return data
+}
+
 export const getSingleProductApi = async (_id: string | null) => {
   let { data } = await axios.get(
     `${import.meta.env.VITE_BACKEND}/api/v1/products/oneproduct?_id=${_id}`

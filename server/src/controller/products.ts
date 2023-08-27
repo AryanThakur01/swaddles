@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 import Products from '../models/products'
+import { IProducts } from '../config/Interfaces'
 
 interface ISearchQuery {
   search?: string
@@ -16,6 +17,23 @@ export const getAllProducts = expressAsyncHandler(async (_, res: Response) => {
   const s = new Set()
   const products = await Products.find().sort({ _id: 1 })
   res.status(200).json({ ...products })
+})
+
+export const getProductList = expressAsyncHandler(async (req, res)=>{
+  const {products} = req.query;
+  if(typeof products !== "string" || !products)
+    throw new Error("products Not Found")
+
+  let productList: string[] = JSON.parse(products)
+
+  let productData = [];
+  for(let i = productList.length-1; i >= 0; i--){
+    let toSearch = JSON.parse(productList[i])
+    let product = await Products.findOne({_id: toSearch.order});
+    productData.push(product)
+  }
+
+  res.status(200).json(productData)
 })
 
 export const getSearchedProduct = expressAsyncHandler(

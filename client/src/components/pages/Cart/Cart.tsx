@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Footer from "../../UI/Footer";
 import Navigation from "../../UI/Navigation";
 import OrderCard from "../../cards/OrderCard";
 import { getCartApi } from "../../../Api/Cart";
 import { ICart } from "../../../interfaces/interface";
 import LoadingSkeleton from "../../UI/LoadingSkeleton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const Cart = () => {
+const Cart: FC = () => {
   const [orderList, setOrderList] = useState<ICart[]>();
   const [retailPrice, setRetailPrice] = useState<number>(0);
   const [discountPrice, setDiscountPrice] = useState<number>(0);
@@ -15,11 +15,18 @@ const Cart = () => {
   const [quantity, setQuantity] = useState<number>(0);
   const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   const checkoutHandler = () => {
     if (!orderList) return;
-    for (let i = orderList.length; i > 0; i--) {
-      console.log(orderList[i - 1]);
+    const lastElement = orderList.length
+    let checkoutData: string | string[] = []
+    for (let index = 0; index < lastElement; index++) {
+      let productData = {order: orderList[index].item._id, qty: orderList[index].quantity};
+      checkoutData.push(JSON.stringify(productData));
     }
+    checkoutData = JSON.stringify(checkoutData)
+    navigate("/checkout?search="+checkoutData)
   };
   const getCartProducts = async () => {
     setSearchingProducts(true);

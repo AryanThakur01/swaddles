@@ -8,10 +8,13 @@ const Input: FC<IInputFields> = ({
   isRequired,
   uni,
   disabled,
+  inputClass,
+  labelClass,
+  containerClass,
 }) => {
   return (
-    <div className="flex flex-col w-full">
-      <label htmlFor={uni} className="text-secondary_dark">
+    <div className={`flex flex-col w-full ${containerClass}`}>
+      <label htmlFor={uni} className={`text-secondary_dark ${labelClass}`}>
         {label}
         {isRequired && "*"}
       </label>
@@ -23,7 +26,7 @@ const Input: FC<IInputFields> = ({
           disabled
             ? "border-primary_white text-tertiary_white"
             : "border-secondary_white text-tertiary_dark"
-        } rounded-sm p-1`}
+        } rounded-sm p-1 ${inputClass}`}
         placeholder={placeholder}
         disabled={disabled}
       />
