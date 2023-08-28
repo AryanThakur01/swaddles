@@ -29,7 +29,6 @@ const Cart: FC = () => {
     navigate("/checkout?search="+checkoutData)
   };
   const getCartProducts = async () => {
-    setSearchingProducts(true);
     const cart: ICart[] = await getCartApi();
     let tempRetailPrice = 0;
     let tempDiscountPrice = 0;
@@ -48,17 +47,18 @@ const Cart: FC = () => {
     setDiscountPrice(tempDiscountPrice);
     setDeliveryCharges(tempDeliveryCharges);
     setQuantity(tempQuantity);
-    setSearchingProducts(false);
   };
   useEffect(() => {
+    setSearchingProducts(true);
     getCartProducts();
+    setSearchingProducts(false);
   }, []);
 
   return (
     <div>
       <Navigation />
 
-      <div className="my-20 mx-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="my-20 md:mx-4 grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="bg-white p-3 md:col-span-2 rounded-sm flex flex-col gap-3 shadow-md">
           {!orderList || searchingProducts ? (
             <>
@@ -85,12 +85,12 @@ const Cart: FC = () => {
             <hr className="my-2" />
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Price({quantity} Items)</p>
-              <p className="text-primary_dark">₹ {retailPrice}</p>
+              <p className="text-primary_dark">₹ {retailPrice.toLocaleString()}</p>
             </div>
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Discount</p>
               <p className="text-success font-bold">
-                -₹ {retailPrice - discountPrice}
+                -₹ {(retailPrice - discountPrice).toLocaleString()}
               </p>
             </div>
             <div className="flex justify-between my-2 text-secondary_dark">
@@ -106,11 +106,11 @@ const Cart: FC = () => {
             <hr className="my-6" />
             <div className="flex justify-between my-2 text-primary_dark font-bold text-2xl">
               <p>Total Amount</p>
-              <p>₹ {discountPrice + deliveryCharges}</p>
+              <p>₹ {(discountPrice + deliveryCharges).toLocaleString()}</p>
             </div>
             <hr className="my-6" />
             <p className="text-success font-bold tracking-wider text-center">
-              You will save <b>₹ {retailPrice - discountPrice}</b> on this
+              You will save <b>₹ {(retailPrice - discountPrice).toLocaleString()}</b> on this
               purchase
             </p>
             {orderList && (

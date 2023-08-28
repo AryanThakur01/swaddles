@@ -1,15 +1,20 @@
 import Navigation from '../../UI/Navigation.tsx'
 import { getProductList } from '../../../Api/Products.tsx'
-import { FC, useEffect, useState } from 'react'
+import { FC, Fragment, useEffect, useState } from 'react'
 import { Form, Formik } from 'formik'
 import Input from '../../UI/Input.tsx'
 import * as yup from 'yup'
 import { IProducts } from '../../../interfaces/interface.tsx'
 
-const CheckoutPage:FC = () => {
+interface ICheckoutPage{}
+interface ICheckoutProducts extends IProducts{
+  qty?: number
+}
+
+
+const CheckoutPage:FC<ICheckoutPage> = () => {
   const [uploading, setUploading] = useState<boolean>(false);
-  const [order, setOrder] = useState<IProducts[]>();
-  const [pQuantity, setPQuantity] = useState([])
+  const [order, setOrder] = useState<ICheckoutProducts[]>();
   const [retailPrice, setRetailPrice] = useState<number>(0);
   const [discountPrice, setDiscountPrice] = useState<number>(0);
   const [deliveryCharges, setDeliveryCharges] = useState<number>(0);
@@ -21,22 +26,27 @@ const CheckoutPage:FC = () => {
     const siteUrl = new URLSearchParams(window.location.search);
     let search: string = siteUrl.get("search") || "";
     let searchList = JSON.parse(search)
-    for (let i = 0; i < searchList.length; i++) searchList[i] = JSON.parse(searchList[i])
+
     let orderData = await getProductList(search);
+    for (let j = 0; j < searchList.length; j++) searchList[j] = JSON.parse(searchList[j])
     for (let i = 0; i < orderData.length; i++) {
       orderData[i].image = JSON.parse(orderData[i].image)
+      for (let j = 0; j < searchList.length; j++) {
+        if(searchList[j].order === orderData[i]._id)
+          orderData[i].qty = searchList[j].qty
+      }
     }
     setOrder(orderData)
     setQuantity(orderData.length)
   }
   const onSumitHandler = async () => {
+    setUploading(true);
     setUploading(false);
   };
   // --------------------------------------------------------------------------
 
   // -------------------- Additional Components -------------------------------
-  const ProductCard: FC<IProducts> = ({_id, brand, image, product_name, retail_price, discounted_price})=>{
-    let pQuantity;
+  const ProductCard: FC<ICheckoutProducts> = ({_id, brand, image, product_name, retail_price, discounted_price, qty})=>{
     
     return(
       <div className="flex justify-between gap-4">
@@ -44,8 +54,9 @@ const CheckoutPage:FC = () => {
           <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
             <img src={image[0]} className="h-28"/>
           </div>
-          <div className="flex text-lg">
+          <div className="flex flex-col justify-between text-lg">
             <h2>{product_name}</h2>
+            <p className="text-secondary_dark">&times; {qty}</p>
           </div>
         </div>
         <div className="flex flex-col justify-between gap-5">
@@ -93,10 +104,10 @@ const CheckoutPage:FC = () => {
       <div className="my-20 grid md:grid-cols-5 gap-3 bg-white p-3 max-w-7xl m-auto rounded">
         <div className="min-h-full min-w-full bg-primary_white p-3 col-span-3 rounded shadow-inner flex flex-col">
           {order && order.map(item=>
-            <>
-              <ProductCard {...item} key={item._id} />
+            <div key={item._id}>
+              <ProductCard {...item}/>
               <hr className="my-5"/>
-            </>
+            </div>
           )}
         </div>
 
