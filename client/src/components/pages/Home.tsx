@@ -4,13 +4,15 @@ import Offer from "../cards/Product.tsx";
 import Footer from "../UI/Footer.tsx";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Keyboard, Pagination } from "swiper/modules";
-import { getHomePageData } from "../../Api/Home.tsx";
+import { getHomePageData, getHomeProductsList } from "../../Api/Home.tsx";
 import { IProducts } from "../../interfaces/interface.tsx";
 import { useNavigate } from "react-router-dom";
 
 const Home: FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [carousel, setCarousel] = useState<IProducts[]>();
+  const [offers, setOffers] = useState<IProducts[]>();
+  const [bestSellers, setBestSellers] = useState<IProducts[]>();
 
   const carouselData = [
     {
@@ -186,17 +188,6 @@ const Home: FC = () => {
       price: 250,
     },
   ];
-
-  // const carouselNext = () => {
-  //   if (activeIndex < carouselData.length - 1) setActiveIndex(activeIndex + 1);
-  //   else setActiveIndex(0);
-  // };
-  // const carouselPrevious = () => {
-  //   // console.log(activeIndex);
-  //   if (activeIndex > 0) setActiveIndex(activeIndex - 1);
-  //   else setActiveIndex(carouselData.length - 1);
-  // };
-
   const scrollRight = (ElementId: string, scrollValue = 0) => {
     const element = document.querySelector(ElementId);
     const w = element?.clientWidth;
@@ -225,9 +216,17 @@ const Home: FC = () => {
   };
 
   const homePageData = async () => {
+    // Carousel Data
     const data = await getHomePageData();
     data.carouselData = data.carouselData.slice(0, 6);
     setCarousel([...data.carouselData]);
+
+    // Display Products Data
+    const products = await getHomeProductsList();
+    const offers: IProducts[] = products.offers;
+    const bestSellers: IProducts[] = products.bestSellers;
+    setBestSellers(bestSellers);
+    setOffers(offers);
   };
 
   const navigate = useNavigate();
@@ -306,10 +305,15 @@ const Home: FC = () => {
           carousel.map((item) => (
             <SwiperSlide key={item._id}>
               <div
-                style={{
-                  background: `url(${item.image[0]}) no-repeat bottom/cover`,
-                }}
+              // style={{
+              //   background: `url(${item.image[0]}) no-repeat bottom/cover`,
+              // }}
               >
+                <img
+                  src={item.image[0]}
+                  alt="NOT AVAILABLE"
+                  className="absolute z-[-1] h-full right-0"
+                />
                 <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
                   <p>{item.brand}</p>
                   <button
@@ -354,27 +358,29 @@ const Home: FC = () => {
         <div className="p-1 shadow-inner rounded-md">
           <div
             id="offers"
-            className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md"
+            className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md no-scroll"
           >
             <div className="inline-flex flex-wrap justify-center md:flex-nowrap gap-5">
-              {offerProducts.map((item) => (
-                <Offer
-                  key={item.id}
-                  name={item.name}
-                  image={item.image}
-                  description={item.description}
-                  price={item.price}
-                  previousPrice={item.previousPrice}
-                  cardColor="primary_white"
-                />
-              ))}
+              {offers &&
+                offers.map((item) => (
+                  <Offer
+                    key={item._id}
+                    id={item._id}
+                    name={item.product_name}
+                    image={item.image[0]}
+                    description={item.description}
+                    price={item.discounted_price}
+                    previousPrice={item.retail_price}
+                    cardColor="primary_white"
+                  />
+                ))}
             </div>
-            <button
-              type="button"
-              className="self-center text-6xl bg-white rounded rotate-90 md:rotate-0"
-            >
-              {">"}
-            </button>
+            {/* <button */}
+            {/*   type="button" */}
+            {/*   className="self-center text-6xl bg-white rounded rotate-90 md:rotate-0" */}
+            {/* > */}
+            {/*   {">"} */}
+            {/* </button> */}
           </div>
         </div>
       </div>
@@ -409,73 +415,75 @@ const Home: FC = () => {
         <div className="p-1 shadow-inner rounded-md">
           <div
             id="bestSellers"
-            className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md"
+            className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md no-scroll"
           >
             <div className="inline-flex flex-wrap justify-center md:flex-nowrap gap-5">
-              {BestSellers.map((item) => (
-                <Offer
-                  key={item.id}
-                  name={item.name}
-                  image={item.image}
-                  description={item.description}
-                  price={item.price}
-                  previousPrice={item.previousPrice ? item.previousPrice : 0}
-                  cardColor="primary_white"
-                />
-              ))}
+              {bestSellers &&
+                bestSellers.map((item) => (
+                  <Offer
+                    key={item._id}
+                    id={item._id}
+                    name={item.product_name}
+                    image={item.image[0]}
+                    description={item.description}
+                    price={item.discounted_price}
+                    previousPrice={item.retail_price ? item.retail_price : 0}
+                    cardColor="primary_white"
+                  />
+                ))}
             </div>
-            <button
-              type="button"
-              className="self-center text-6xl bg-white rounded-md rotate-90 md:rotate-0"
-            >
-              {">"}
-            </button>
+            {/* <button */}
+            {/*   type="button" */}
+            {/*   className="self-center text-6xl bg-white rounded-md rotate-90 md:rotate-0" */}
+            {/* > */}
+            {/*   {">"} */}
+            {/* </button> */}
           </div>
         </div>
       </div>
 
       {/* Carousel 02 */}
-      <div className="flex justify-between relative top-[55vh]">
-        <button
-          type="button"
-          className="m-5 rounded-md py-5 px-1 text-3xl"
-          onClick={() => scrollLeft("#topProducts")}
-        >
-          {"<"}
-        </button>
-        <button
-          type="button"
-          className="m-5 rounded-md py-5 px-1 text-3xl"
-          onClick={() => scrollRight("#topProducts")}
-        >
-          {">"}
-        </button>
-      </div>
-      <div
-        id="topProducts"
-        className="w-full flex overflow-x-hidden scroll-smooth rounded-md snap-x snap-mandatory"
-      >
-        <div className="inline-flex justify-center flex-nowrap gap-5 h-[100vh]">
-          <div
-            style={{
-              background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`,
-            }}
-            className="h-full w-[100vw] snap-always snap-center"
-          />
-          <div
-            style={{
-              background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`,
-            }}
-            className="h-full w-[100vw] snap-always snap-center"
-          />
-          <div
-            style={{
-              background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`,
-            }}
-            className="h-full w-[100vw] snap-always snap-center"
-          />
-        </div>
-      </div>
+      {/* <div className="flex justify-between relative top-[55vh]"> */}
+      {/*   <button */}
+      {/*     type="button" */}
+      {/*     className="m-5 rounded-md py-5 px-1 text-3xl" */}
+      {/*     onClick={() => scrollLeft("#topProducts")} */}
+      {/*   > */}
+      {/*     {"<"} */}
+      {/*   </button> */}
+      {/*   <button */}
+      {/*     type="button" */}
+      {/*     className="m-5 rounded-md py-5 px-1 text-3xl" */}
+      {/*     onClick={() => scrollRight("#topProducts")} */}
+      {/*   > */}
+      {/*     {">"} */}
+      {/*   </button> */}
+      {/* </div> */}
+      {/* <div */}
+      {/*   id="topProducts" */}
+      {/*   className="w-full flex overflow-x-hidden scroll-smooth rounded-md snap-x snap-mandatory" */}
+      {/* > */}
+      {/*   <div className="inline-flex justify-center flex-nowrap gap-5 h-[100vh]"> */}
+      {/*     <div */}
+      {/*       style={{ */}
+      {/*         background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`, */}
+      {/*       }} */}
+      {/*       className="h-full w-[100vw] snap-always snap-center" */}
+      {/*     /> */}
+      {/*     <div */}
+      {/*       style={{ */}
+      {/*         background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`, */}
+      {/*       }} */}
+      {/*       className="h-full w-[100vw] snap-always snap-center" */}
+      {/*     /> */}
+      {/*     <div */}
+      {/*       style={{ */}
+      {/*         background: `url(${carouselData[activeIndex].image}) no-repeat center center/cover`, */}
+      {/*       }} */}
+      {/*       className="h-full w-[100vw] snap-always snap-center" */}
+      {/*     /> */}
+      {/*   </div> */}
+      {/* </div> */}
       <Footer />
     </div>
   );

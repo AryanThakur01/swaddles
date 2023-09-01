@@ -19,17 +19,17 @@ export const getAllProducts = expressAsyncHandler(async (_, res: Response) => {
   res.status(200).json({ ...products })
 })
 
-export const getProductList = expressAsyncHandler(async (req, res)=>{
-  const {products} = req.query;
-  if(typeof products !== "string" || !products)
-    throw new Error("products Not Found")
+export const getProductList = expressAsyncHandler(async (req, res) => {
+  const { products } = req.query
+  if (typeof products !== 'string' || !products)
+    throw new Error('products Not Found')
 
   let productList: string[] = JSON.parse(products)
 
-  let productData = [];
-  for(let i = productList.length-1; i >= 0; i--){
+  let productData = []
+  for (let i = productList.length - 1; i >= 0; i--) {
     let toSearch = JSON.parse(productList[i])
-    let product = await Products.findOne({_id: toSearch.order});
+    let product = await Products.findOne({ _id: toSearch.order })
     productData.push(product)
   }
 
@@ -110,5 +110,13 @@ export const getFilters = expressAsyncHandler(
       allFilters.push(filterList)
     }
     res.status(200).json({ filters: allFilters })
+  }
+)
+
+export const getHomePageProducts = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const offers = await Products.find().skip(4500).limit(10)
+    const bestSellers = await Products.find().skip(8000).limit(15)
+    res.status(200).json({ offers, bestSellers })
   }
 )

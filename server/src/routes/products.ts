@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
   getAllProducts,
   getFilters,
+  getHomePageProducts,
   getOneProduct,
   getProductList,
   getSearchedProduct,
@@ -13,5 +14,6 @@ router.route('/search').get(getSearchedProduct)
 router.route('/oneproduct').get(getOneProduct)
 router.route('/getfilters').get(getFilters)
 router.route('/getproductlist').get(getProductList)
+router.route('/gethomeproducts').get(getHomePageProducts)
 
 export default router

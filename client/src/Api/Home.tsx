@@ -15,7 +15,26 @@ export const getHomePageData = async () => {
   }
 
   const carouselData: IProducts[] = data.carouselData;
-  console.log(carouselData);
 
   return { carouselData };
+};
+
+export const getHomeProductsList = async () => {
+  const { data } = await axios({
+    method: "get",
+    url: `${import.meta.env.VITE_BACKEND}/api/v1/products/gethomeproducts`,
+  });
+  for (let i = 0; i < data.offers.length; i++) {
+    const item = data.offers[i];
+    data.offers[i].image = item.image
+      .substring(2, item.image.length - 2)
+      .split('", "');
+  }
+  for (let i = 0; i < data.bestSellers.length; i++) {
+    const item = data.bestSellers[i];
+    data.bestSellers[i].image = item.image
+      .substring(2, item.image.length - 2)
+      .split('", "');
+  }
+  return data;
 };
