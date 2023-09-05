@@ -41,9 +41,9 @@ export interface IInputFields {
   uni: string;
   disabled?: boolean;
   value?: string | boolean;
-  inputClass? : string;
-  labelClass? : string;
-  containerClass? : string;
+  inputClass?: string;
+  labelClass?: string;
+  containerClass?: string;
 }
 // -------------------------------------------------
 

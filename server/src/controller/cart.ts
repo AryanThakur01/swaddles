@@ -39,9 +39,7 @@ export const RemoveFromCart = expressAsyncHandler(
 
     userId = payload._id
     const filter = { user: userId, _id }
-    console.log(filter)
     const cart = await Cart.findOneAndDelete(filter)
-    console.log(cart)
     res.status(200).json({ ...cart })
   }
 )

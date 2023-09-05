@@ -1,44 +1,53 @@
-import Navigation from '../../UI/Navigation.tsx'
-import { getProductList } from '../../../Api/Products.tsx'
-import { FC, Fragment, useEffect, useState } from 'react'
-import { Form, Formik } from 'formik'
-import Input from '../../UI/Input.tsx'
-import * as yup from 'yup'
-import { IProducts } from '../../../interfaces/interface.tsx'
+import Navigation from "../../UI/Navigation.tsx";
+import { getProductList } from "../../../Api/Products.tsx";
+import { FC, useEffect, useState } from "react";
+import { Form, Formik } from "formik";
+import Input from "../../UI/Input.tsx";
+import * as yup from "yup";
+import { IProducts } from "../../../interfaces/interface.tsx";
 
-interface ICheckoutPage{}
-interface ICheckoutProducts extends IProducts{
-  qty?: number
+interface ICheckoutPage {}
+interface ICheckoutProducts extends IProducts {
+  qty?: number;
 }
 
-
-const CheckoutPage:FC<ICheckoutPage> = () => {
+const CheckoutPage: FC<ICheckoutPage> = () => {
   const [uploading, setUploading] = useState<boolean>(false);
   const [order, setOrder] = useState<ICheckoutProducts[]>();
   const [retailPrice, setRetailPrice] = useState<number>(0);
   const [discountPrice, setDiscountPrice] = useState<number>(0);
   const [deliveryCharges, setDeliveryCharges] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
-  const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
+  // const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
 
   // --------------------- Functions for the page -----------------------------
-  const productsData = async ()=>{
+  const productsData = async () => {
     const siteUrl = new URLSearchParams(window.location.search);
     let search: string = siteUrl.get("search") || "";
-    let searchList = JSON.parse(search)
+    let searchList = JSON.parse(search);
 
     let orderData = await getProductList(search);
-    for (let j = 0; j < searchList.length; j++) searchList[j] = JSON.parse(searchList[j])
+    let tempRetail = 0;
+    let tempDiscount = 0;
+    for (let j = 0; j < searchList.length; j++)
+      searchList[j] = JSON.parse(searchList[j]);
     for (let i = 0; i < orderData.length; i++) {
-      orderData[i].image = JSON.parse(orderData[i].image)
+      orderData[i].image = JSON.parse(orderData[i].image);
       for (let j = 0; j < searchList.length; j++) {
-        if(searchList[j].order === orderData[i]._id)
-          orderData[i].qty = searchList[j].qty
+        if (searchList[j].order === orderData[i]._id) {
+          orderData[i].qty = searchList[j].qty;
+          tempRetail += orderData[j].retail_price;
+          tempDiscount += orderData[j].discounted_price;
+        }
       }
     }
-    setOrder(orderData)
-    setQuantity(orderData.length)
-  }
+    console.log(tempRetail, tempDiscount);
+    setRetailPrice(tempRetail);
+    setDiscountPrice(tempDiscount);
+    setDeliveryCharges(tempDiscount <= 500 ? 40 : 0);
+    setOrder(orderData);
+    setQuantity(orderData.length);
+  };
   const onSumitHandler = async () => {
     setUploading(true);
     setUploading(false);
@@ -46,13 +55,17 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
   // --------------------------------------------------------------------------
 
   // -------------------- Additional Components -------------------------------
-  const ProductCard: FC<ICheckoutProducts> = ({_id, brand, image, product_name, retail_price, discounted_price, qty})=>{
-    
-    return(
+  const ProductCard: FC<ICheckoutProducts> = ({
+    image,
+    product_name,
+    discounted_price,
+    qty,
+  }) => {
+    return (
       <div className="flex justify-between gap-4">
         <div className="flex gap-4">
           <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
-            <img src={image[0]} className="h-28"/>
+            <img src={image[0]} className="h-28" />
           </div>
           <div className="flex flex-col justify-between text-lg">
             <h2>{product_name}</h2>
@@ -61,11 +74,13 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
         </div>
         <div className="flex flex-col justify-between gap-5">
           <p>₹ {discounted_price.toLocaleString()}</p>
-          <button className="text-3xl text-secondary_dark hover:scale-105 hover:text-primary_dark">&times;</button>
+          <button className="text-3xl text-secondary_dark hover:scale-105 hover:text-primary_dark">
+            &times;
+          </button>
         </div>
       </div>
-    )
-  }
+    );
+  };
   // --------------------------------------------------------------------------
 
   // -------------------- Formik Data And Validation --------------------------
@@ -92,23 +107,24 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
   // --------------------------------------------------------------------------
 
   // --------------------- To Load When The Page Loads ------------------------
-  useEffect(()=>{
-    productsData()
-  },[])
+  useEffect(() => {
+    productsData();
+  }, []);
   // --------------------------------------------------------------------------
 
-  const inputClass="h-9"
+  const inputClass = "h-9";
   return (
     <div>
       <Navigation />
       <div className="my-20 grid md:grid-cols-5 gap-3 bg-white p-3 max-w-7xl m-auto rounded">
         <div className="min-h-full min-w-full bg-primary_white p-3 col-span-3 rounded shadow-inner flex flex-col">
-          {order && order.map(item=>
-            <div key={item._id}>
-              <ProductCard {...item}/>
-              <hr className="my-5"/>
-            </div>
-          )}
+          {order &&
+            order.map((item) => (
+              <div key={item._id}>
+                <ProductCard {...item} />
+                <hr className="my-5" />
+              </div>
+            ))}
         </div>
 
         <div className="min-h-full min-w-full bg-primary_white p-3 col-span-2 rounded shadow-inner">
@@ -117,20 +133,24 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
             <hr className="my-2" />
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Price({quantity} Items)</p>
-              <p className="text-primary_dark">₹ {retailPrice}</p>
+              <p className="text-primary_dark">
+                ₹ {retailPrice.toLocaleString()}
+              </p>
             </div>
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Discount</p>
               <p className="text-success font-bold">
-                -₹ {retailPrice - discountPrice}
+                -₹ {(retailPrice - discountPrice).toLocaleString()}
               </p>
             </div>
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Delivery Charges</p>
               <p
-                className={`${deliveryCharges? "" : "text-success"} font-bold`}
+                className={`${deliveryCharges ? "" : "text-success"} font-bold`}
               >
-                {deliveryCharges ? `${deliveryCharges.toLocaleString()}`: "Free"}
+                {deliveryCharges
+                  ? `${deliveryCharges.toLocaleString()}`
+                  : "Free"}
               </p>
             </div>
             <hr className="my-6" />
@@ -140,7 +160,9 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
             </div>
             <hr className="my-6" />
           </div>
-          <h2 className="my-5 text-xl font-bold text-secondary_dark">Contact Information</h2>
+          <h2 className="my-5 text-xl font-bold text-secondary_dark">
+            Contact Information
+          </h2>
           <Formik
             initialValues={initialData}
             validationSchema={validationSchema}
@@ -159,8 +181,10 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
                       labelClass="py-2"
                       inputClass={inputClass}
                     />
-                    <hr className="my-5"/>
-                    <h2 className="my-5 text-xl font-bold text-secondary_dark">Payment Details</h2>
+                    <hr className="my-5" />
+                    <h2 className="my-5 text-xl font-bold text-secondary_dark">
+                      Payment Details
+                    </h2>
                     <Input
                       label="Card Number"
                       placeholder="4323 4323 4323 3243"
@@ -184,36 +208,38 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
                         containerClass="max-w-[20%]"
                       />
                     </div>
-                    <hr className="my-5"/>
-                    <h2 className="my-5 text-xl font-bold text-secondary_dark">Shipping address</h2>
+                    <hr className="my-5" />
+                    <h2 className="my-5 text-xl font-bold text-secondary_dark">
+                      Shipping address
+                    </h2>
+                    <Input
+                      label="Address"
+                      placeholder="Address"
+                      isRequired={true}
+                      uni="address"
+                      inputClass={"w-full " + inputClass}
+                    />
+                    <div className="grid grid-cols-3 gap-2">
                       <Input
-                        label="Address"
-                        placeholder="Address"
+                        label="City"
                         isRequired={true}
-                        uni="address"
+                        uni="city"
                         inputClass={"w-full " + inputClass}
                       />
-                      <div className="grid grid-cols-3 gap-2">
-                        <Input
-                          label="City"
-                          isRequired={true}
-                          uni="city"
-                          inputClass={"w-full " + inputClass}
-                        />
-                        <Input
-                          label="State/Province"
-                          isRequired={true}
-                          uni="state"
-                          inputClass={"w-full " + inputClass}
-                        />
-                        <Input
-                          label="Postal Code"
-                          isRequired={true}
-                          uni="postaladdress"
-                          inputClass={"w-full " + inputClass}
-                        />
-                      </div>
-                   </div>
+                      <Input
+                        label="State/Province"
+                        isRequired={true}
+                        uni="state"
+                        inputClass={"w-full " + inputClass}
+                      />
+                      <Input
+                        label="Postal Code"
+                        isRequired={true}
+                        uni="postaladdress"
+                        inputClass={"w-full " + inputClass}
+                      />
+                    </div>
+                  </div>
                   <hr />
                   <div className="flex flex-col w-full gap-2">
                     <button
@@ -231,7 +257,7 @@ const CheckoutPage:FC<ICheckoutPage> = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default CheckoutPage;
