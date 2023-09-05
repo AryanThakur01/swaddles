@@ -7,6 +7,7 @@ import { Autoplay, Keyboard, Pagination } from "swiper/modules";
 import { getHomePageData, getHomeProductsList } from "../../Api/Home.tsx";
 import { IProducts } from "../../interfaces/interface.tsx";
 import { useNavigate } from "react-router-dom";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Home: FC = () => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -330,32 +331,22 @@ const Home: FC = () => {
 
       {/* OFFERS */}
       <div className="overflow-x-hidden py-4 px-[5%] md:px-[16%] m-auto">
-        <div className="flex justify-between items-center">
-          <div className="my-3 text-2xl font-semibold">OFFERS</div>
-          <div className="hidden md:flex gap-3 h-fit">
-            <button
-              type="button"
-              className="border-2 border-primary_white w-6 font-extrabold rounded-sm"
-              onClick={() => scrollLeft("#offers", 400)}
-            >
-              {"<"}
-            </button>
-            <button
-              type="button"
-              className="border-2 border-primary_white px-2 font-bold rounded-sm"
-            >
-              Show All
-            </button>
-            <button
-              type="button"
-              className="border-2 border-primary_white w-6 font-extrabold rounded-sm"
-              onClick={() => scrollRight("#offers", 400)}
-            >
-              {">"}
-            </button>
-          </div>
-        </div>
+        <h2 className="my-3 text-2xl font-semibold">OFFERS</h2>
         <div className="p-1 shadow-inner rounded-md">
+          <button
+            type="button"
+            className="w-10 h-10 justify-center items-center rounded-full bg-tertiary_dark text-white absolute my-44 left-[15%] hidden md:flex shadow-lg hover:scale-105"
+            onClick={() => scrollLeft("#offers", 400)}
+          >
+            <FaChevronLeft />
+          </button>
+          <button
+            type="button"
+            className="w-10 h-10 justify-center items-center rounded-full bg-tertiary_dark text-white absolute left-[82%] my-44 hidden md:flex shadow-lg hover:scale-105"
+            onClick={() => scrollRight("#offers", 400)}
+          >
+            <FaChevronRight />
+          </button>
           <div
             id="offers"
             className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md no-scroll"
@@ -387,32 +378,23 @@ const Home: FC = () => {
 
       {/* BEST SELLERS */}
       <div className="overflow-x-hidden my-12 px-[5%] md:px-[16%] m-auto">
-        <div className="flex justify-between items-center">
-          <div className="my-3 text-2xl font-semibold">BEST SELLERS</div>
-          <div className="hidden md:flex gap-3 h-fit">
-            <button
-              type="button"
-              className="border-2 border-primary_white w-6 font-extrabold rounded-sm"
-              onClick={() => scrollLeft("#bestSellers", 400)}
-            >
-              {"<"}
-            </button>
-            <button
-              type="button"
-              className="border-2 border-primary_white px-2 font-bold rounded-sm"
-            >
-              Show All
-            </button>
-            <button
-              type="button"
-              className="border-2 border-primary_white w-6 font-extrabold rounded-sm"
-              onClick={() => scrollRight("#bestSellers", 400)}
-            >
-              {">"}
-            </button>
-          </div>
-        </div>
+        <h2 className="my-3 text-2xl font-semibold">BEST SELLERS</h2>
         <div className="p-1 shadow-inner rounded-md">
+          <button
+            type="button"
+            className="w-10 h-10 justify-center items-center rounded-full bg-tertiary_dark text-white absolute my-44 left-[15%] hidden md:flex shadow-lg hover:scale-105"
+            onClick={() => scrollLeft("#bestSellers", 400)}
+          >
+            <FaChevronLeft />
+          </button>
+          <button
+            type="button"
+            className="w-10 h-10 justify-center items-center rounded-full bg-tertiary_dark text-white absolute left-[82%] my-44 hidden md:flex shadow-lg hover:scale-105"
+            onClick={() => scrollRight("#bestSellers", 400)}
+          >
+            <FaChevronRight />
+          </button>
+
           <div
             id="bestSellers"
             className="w-full flex flex-col md:flex-row md:overflow-x-scroll scroll-smooth rounded-md no-scroll"

@@ -16,13 +16,17 @@ export default {
       },
       keyframes: {
         popup: {
-          "0%": { transform: "scale(0)" },
-          "50%": { transform: "scale(1.1)" },
-          "100%": { transform: "scale(1)" },
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        movein_right: {
+          "0%": { width: "0" },
+          "100%": { width: "100%" },
         },
       },
       animation: {
-        popup: "popup 0.3s linear",
+        popup: "popup 0.2s ease-out",
+        movein_right: "movein_right 0.3s ease-out",
       },
       borderRadius: {
         sm: "0.2rem",

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { FaHome, FaRegAddressBook, FaUserCircle } from "react-icons/fa";
+import { FaHome, FaRegAddressBook, FaUser } from "react-icons/fa";
 import { HiMenuAlt4, HiSearch, HiShoppingCart } from "react-icons/hi";
 import { GrClose, GrLogin, GrLogout } from "react-icons/gr";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,12 @@ const Navigation: FC = () => {
   const [search, setSearch] = useState("");
 
   const navigationList: Array<INavigationCategory> = [
-    { page: "Home", link: "/", logo: <FaHome />, displayTo: "all" },
+    {
+      page: "Profile",
+      link: `${localStorage.getItem("token") ? "/account" : "/login"}`,
+      logo: <FaUser />,
+      displayTo: "all",
+    },
     {
       page: "Cart",
       link: "/cart",
@@ -53,73 +58,77 @@ const Navigation: FC = () => {
   const navigate = useNavigate();
 
   const searchProduct = async () => {
-    console.log(search);
-    // const products = await axios.get(
-    //   `${
-    //     import.meta.env.VITE_BACKEND
-    //   }/api/v1/products/search?search=${search}&page=${1}&limit=${20}`
-    // );
-    // console.log(products);
-    // navigate({
-    //   pathname: "/productsDisplay",
-    //   search: `?search=${search}`,
-    // });
-    navigate(`/productsDisplay?search=${search}`);
-    window.location.reload();
+    if (!search.trim()) {
+      return;
+    } else {
+      navigate(`/productsDisplay?search=${search}`);
+      window.location.reload();
+    }
   };
 
   return (
     <>
       <div
         id="nav"
-        className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md"
+        className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md overflow-hidden"
       >
         {/* PROFILE */}
-        {localStorage.getItem("token") ? (
-          <Link
-            className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold"
-            to="/account"
-          >
-            <FaUserCircle />
-          </Link>
-        ) : (
-          <Link
-            className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold"
-            to="/login"
-          >
-            <FaUserCircle />
-          </Link>
-        )}
+        {/* {localStorage.getItem("token") ? ( */}
+        {/*   <Link */}
+        {/*     className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold" */}
+        {/*     to="/account" */}
+        {/*   > */}
+        {/*     <FaUserCircle /> */}
+        {/*   </Link> */}
+        {/* ) : ( */}
+        {/*   <Link */}
+        {/*     className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold" */}
+        {/*     to="/login" */}
+        {/*   > */}
+        {/*     <FaUserCircle /> */}
+        {/*   </Link> */}
+        {/* )} */}
         {/* LOGO */}
-        {/* <div className="tracking-widest">SWADDLES</div> */}
+        <Link className="tracking-wide hover:tracking-wider" to="/">
+          SWADDLES
+        </Link>
 
-        {isSearch ? (
-          <div className="flex gap-0 rounded-sm overflow-hidden">
+        <div className="flex items-center gap-3">
+          {/* className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md" */}
+          <div
+            className={`fixed right-0 h-full bg-secondary_white p-1 z-50 flex justify-center w-full md:gap-5 ${
+              isSearch ? "animate-movein_right" : "hidden"
+            }`}
+          >
+            <button className="px-2 rounded" onClick={searchProduct}>
+              <HiSearch />
+            </button>
             <input
               type="text"
               name="product_search"
               id="product_search"
-              className="outline-none bg-primary_white p-1 text-sm w-80"
+              className="outline-none text-black placeholder:text-tertiary_dark bg-secondary_white p-2 text-sm w-full"
               placeholder="Enter the product brand and more"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && searchProduct()}
             />
-            <button className="bg-primary_white px-2" onClick={searchProduct}>
-              <HiSearch />
+            <button
+              className="px-2 text-lg rounded"
+              onClick={() => setIsSearch(!isSearch)}
+            >
+              <GrClose />
             </button>
           </div>
-        ) : (
-          <div className="tracking-widest">SWADDLES</div>
-        )}
-        <div className="flex items-center gap-3">
           {/* SEARCH */}
           <button
             type="button"
             className="text-2xl hover:invert-[15%]"
-            onClick={() => setIsSearch(!isSearch)}
+            onClick={() => {
+              setIsSearch(!isSearch);
+              document.getElementById("product_search");
+            }}
           >
-            {/* <img src={Assets.search} alt="AT" className="h-8 p-1" /> */}
             <HiSearch />
           </button>
 
@@ -138,10 +147,10 @@ const Navigation: FC = () => {
       {menu ? (
         <>
           <div className="fixed inset-0 z-50 h-full w-full bg-black bg-opacity-60 text-secondary_dark backdrop-blur-sm" />
-          <div className="animate-[popup_0.5s_linear] fixed top-2 inset-x-0 z-50 min-h-[500px] md:h-[98%] md:w-[70%] m-auto bg-secondary_white md:rounded-md flex flex-col">
+          <div className="animate-popup fixed top-2 inset-x-0 z-50 min-h-[500px] md:h-[98%] md:w-[70%] m-auto bg-secondary_white md:rounded-md flex flex-col">
             <button
               type="button"
-              className="w-9 self-end m-2 p-2 border-2 rounded-md bg-red-100"
+              className="w-9 self-end m-2 p-2 hover:scale-105"
               onClick={() => setMenu(0)}
             >
               <GrClose />
