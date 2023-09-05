@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../UI/Footer";
 import { IProducts } from "../../../interfaces/interface";
 import { addToCartApi } from "../../../Api/Cart";
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IProduct {}
 
@@ -49,14 +51,40 @@ const Product: FC<IProduct> = () => {
   };
 
   const addProductToCart = () => {
-    const item = new URLSearchParams(location.search).get("_id");
-    const quantity = 1;
-    if (item) addToCartApi(item, quantity);
+    try {
+      const item = new URLSearchParams(location.search).get("_id");
+      const quantity = 1;
+      if (item) addToCartApi(item, quantity);
+      toast.success("Item Added Successfully", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        toastId: "product-added",
+      });
+    } catch (error) {
+      toast.error("Something Went Wrong", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        toastId: "product-added",
+      });
+    }
   };
 
   return (
     <div>
       <Navigation />
+      <ToastContainer transition={Slide} />
       <div className="my-20 p-4 md:w-[80%] m-auto flex md:flex-row flex-col gap-5 bg-white rounded-sm shadow-lg">
         {CurrentProduct ? (
           <>

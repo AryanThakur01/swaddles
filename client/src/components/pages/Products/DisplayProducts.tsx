@@ -6,6 +6,7 @@ import DisplayCard from "../../cards/DisplayCard";
 import LoadingSkeleton from "../../UI/LoadingSkeleton";
 import { useNavigate } from "react-router-dom";
 import { getProductData } from "../../../context/ProductProvider";
+import { Slide, ToastContainer } from "react-toastify";
 interface IDisplayProducts {}
 
 const DisplayProducts: FC<IDisplayProducts> = () => {
@@ -74,7 +75,7 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
             .
           </button>
         );
-    }
+    },
   );
 
   useEffect(() => {
@@ -100,6 +101,7 @@ const DisplayProducts: FC<IDisplayProducts> = () => {
           </>
         ) : (
           <div className="flex flex-col gap-4">
+            <ToastContainer transition={Slide} />
             {products?.productList?.map((item) => (
               <DisplayCard {...item} key={item._id} />
             ))}

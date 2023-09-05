@@ -2,6 +2,7 @@ import { FC, useState } from "react";
 import { IProducts } from "../../interfaces/interface";
 import { Link } from "react-router-dom";
 import { addToCartApi } from "../../Api/Cart";
+import { toast } from "react-toastify";
 interface IStar {
   isOff?: boolean;
 }
@@ -32,12 +33,36 @@ const DisplayCard: FC<IProducts> = ({
     );
   };
   const addProductToCart = async () => {
-    if (!_id) return;
-    setAddingToCart(true);
-    const item: string = _id;
-    const quantity = 1;
-    await addToCartApi(item, quantity);
-    setAddingToCart(false);
+    try {
+      if (!_id) return;
+      setAddingToCart(true);
+      const item: string = _id;
+      const quantity = 1;
+      await addToCartApi(item, quantity);
+      setAddingToCart(false);
+      toast.success("Item Added Successfully", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } catch (error) {
+      toast.error("Something Went Wrong", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        toastId: "product-added",
+      });
+    }
   };
   return (
     <div className="p-5 shadow-md gap-6 items-center flex md:flex-row flex-col justify-between rounded-md">
