@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import User from '../models/users'
 import asyncHandler from 'express-async-handler'
-import { IUser, LoginData } from '../config/Interfaces'
+import { LoginData } from '../config/Interfaces'
 
-export const testAuth = (req: Request, res: Response) => {
+export const testAuth = (_: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to the auth api' })
 }
 

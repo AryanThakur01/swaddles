@@ -81,6 +81,15 @@ const Product: FC<IProduct> = () => {
     }
   };
 
+  const purchaseHandler = async () => {
+    const _id = new URLSearchParams(location.search).get("_id");
+    let checkoutData: string | string[] = [];
+    let productData = { order: _id, qty: 1 };
+    checkoutData.push(JSON.stringify(productData));
+    checkoutData = JSON.stringify(checkoutData);
+    navigate("/checkout?search=" + checkoutData);
+  };
+
   return (
     <div>
       <Navigation />
@@ -112,7 +121,10 @@ const Product: FC<IProduct> = () => {
                 ))}
               </Swiper>
               <div className="grid grid-cols-2 font-bold text-primary_white md:sticky fixed w-full bottom-0 left-0 z-30">
-                <button className="bg-success p-2 text-center flex justify-center items-center gap-2">
+                <button
+                  className="bg-success p-2 text-center flex justify-center items-center gap-2"
+                  onClick={purchaseHandler}
+                >
                   <FaShoppingBag /> Buy
                 </button>
                 <button

@@ -10,6 +10,7 @@ import productsRouter from './routes/products'
 import cartsRouter from './routes/cart'
 import suggestedRouter from './routes/suggested'
 import connectDb from './config/db'
+import checkoutUser from './routes/checkout'
 // ----------------------------------------------------------
 
 const app = express()
@@ -27,6 +28,7 @@ app.use('/api/v1/auth', authRouter)
 app.use('/api/v1/userdata', userDataRouter)
 app.use('/api/v1/products', productsRouter)
 app.use('/api/v1/cart', cartsRouter)
+app.use('/api/v1/checkout', checkoutUser)
 // ----------------------------------------------------------
 
 // --------------------- Middlewares ------------------------

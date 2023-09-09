@@ -4,7 +4,10 @@ import { FC, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
 import Input from "../../UI/Input.tsx";
 import * as yup from "yup";
-import { IProducts } from "../../../interfaces/interface.tsx";
+import { ICheckout, IProducts } from "../../../interfaces/interface.tsx";
+import { Checkout, ICheckoutData, saveOrder } from "../../../Api/Checkout.tsx";
+import { UserDetails } from "../../../context/AuthProvider.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface ICheckoutPage {}
 interface ICheckoutProducts extends IProducts {
@@ -19,6 +22,8 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
   const [deliveryCharges, setDeliveryCharges] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
   // const [searchingProducts, setSearchingProducts] = useState<boolean>(false);
+  const user = UserDetails();
+  const navigate = useNavigate();
 
   // --------------------- Functions for the page -----------------------------
   const productsData = async () => {
@@ -41,17 +46,50 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
         }
       }
     }
-    console.log(tempRetail, tempDiscount);
     setRetailPrice(tempRetail);
     setDiscountPrice(tempDiscount);
     setDeliveryCharges(tempDiscount <= 500 ? 40 : 0);
     setOrder(orderData);
     setQuantity(orderData.length);
   };
-  const onSumitHandler = async () => {
+  const onSubmitHandler = async (values: ICheckoutData) => {
     setUploading(true);
+
+    try {
+      const siteUrl = new URLSearchParams(window.location.search);
+      let search: string[] = JSON.parse(siteUrl.get("search") || "");
+      let searchList: ICheckout[] = [];
+      let len = search.length;
+      for (let i = 0; i < len; i++) {
+        searchList.push(JSON.parse(search[i]));
+      }
+      let partialOptions = await Checkout(searchList, values);
+      let options = {
+        ...partialOptions,
+        key: "rzp_test_iHQbRxa3O0xQE3",
+        name: `order from user: ${user?._id} `,
+        Description: `Transaction for products`,
+        handler: async (response: any) => {
+          // console.log(values);
+          // console.log(response);
+          // console.log(searchList);
+          await saveOrder(values, response, searchList);
+          navigate("/account/myorders");
+        },
+        prefill: {
+          name: user?.firstname || "" + user?.lastname || "",
+          email: user?.email,
+          contact: user?.mobile,
+        },
+      };
+      const paymentObject = (window as any).Razorpay(options);
+      paymentObject.open();
+    } catch (error) {
+      console.error(error);
+    }
     setUploading(false);
   };
+
   // --------------------------------------------------------------------------
 
   // -------------------- Additional Components -------------------------------
@@ -86,23 +124,23 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
   // -------------------- Formik Data And Validation --------------------------
   const validationSchema = yup.object({
     username: yup.string().required("Field Required"),
-    cardnumber: yup.string().required("Field Required"),
-    expirationdate: yup.string().required("Field Required"),
-    cvc: yup.string().required("Field Required"),
+    // cardnumber: yup.string().required("Field Required"),
+    // expirationdate: yup.string().required("Field Required"),
+    // cvc: yup.string().required("Field Required"),
     address: yup.string().required("Field Required"),
     city: yup.string().required("Field Required"),
     state: yup.string().required("Field Required"),
-    postaladdress: yup.string().required("Field Required"),
+    postalCode: yup.string().required("Field Required"),
   });
   const initialData = {
     username: "",
-    cardnumber: "",
-    expirationdate: "",
-    cvc: "",
+    // cardnumber: "",
+    // expirationdate: "",
+    // cvc: "",
     address: "",
     city: "",
     state: "",
-    postaladdress: "",
+    postalCode: "",
   };
   // --------------------------------------------------------------------------
 
@@ -166,7 +204,7 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
           <Formik
             initialValues={initialData}
             validationSchema={validationSchema}
-            onSubmit={onSumitHandler}
+            onSubmit={onSubmitHandler}
             enableReinitialize={true}
           >
             {() => {
@@ -182,33 +220,33 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
                       inputClass={inputClass}
                     />
                     <hr className="my-5" />
-                    <h2 className="my-5 text-xl font-bold text-secondary_dark">
-                      Payment Details
-                    </h2>
-                    <Input
-                      label="Card Number"
-                      placeholder="4323 4323 4323 3243"
-                      isRequired={true}
-                      inputClass={inputClass}
-                      uni="cardnumber"
-                    />
-                    <div className="flex gap-4">
-                      <Input
-                        label="Expiration Date (MM/YY)"
-                        placeholder="mm/dd/yyyy"
-                        isRequired={true}
-                        uni="expirationdate"
-                        inputClass={"w-full " + inputClass}
-                      />
-                      <Input
-                        label="CVC"
-                        isRequired={true}
-                        uni="cvc"
-                        inputClass={"w-full " + inputClass}
-                        containerClass="max-w-[20%]"
-                      />
-                    </div>
-                    <hr className="my-5" />
+                    {/* <h2 className="my-5 text-xl font-bold text-secondary_dark"> */}
+                    {/*   Payment Details */}
+                    {/* </h2> */}
+                    {/* <Input */}
+                    {/*   label="Card Number" */}
+                    {/*   placeholder="4323 4323 4323 3243" */}
+                    {/*   isRequired={true} */}
+                    {/*   inputClass={inputClass} */}
+                    {/*   uni="cardnumber" */}
+                    {/* /> */}
+                    {/* <div className="flex gap-4"> */}
+                    {/*   <Input */}
+                    {/*     label="Expiration Date (MM/YY)" */}
+                    {/*     placeholder="mm/dd/yyyy" */}
+                    {/*     isRequired={true} */}
+                    {/*     uni="expirationdate" */}
+                    {/*     inputClass={"w-full " + inputClass} */}
+                    {/*   /> */}
+                    {/*   <Input */}
+                    {/*     label="CVC" */}
+                    {/*     isRequired={true} */}
+                    {/*     uni="cvc" */}
+                    {/*     inputClass={"w-full " + inputClass} */}
+                    {/*     containerClass="max-w-[20%]" */}
+                    {/*   /> */}
+                    {/* </div> */}
+                    {/* <hr className="my-5" /> */}
                     <h2 className="my-5 text-xl font-bold text-secondary_dark">
                       Shipping address
                     </h2>
@@ -233,9 +271,9 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
                         inputClass={"w-full " + inputClass}
                       />
                       <Input
-                        label="Postal Code"
+                        label="Postal Code(PIN)"
                         isRequired={true}
-                        uni="postaladdress"
+                        uni="postalCode"
                         inputClass={"w-full " + inputClass}
                       />
                     </div>
@@ -244,7 +282,9 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
                   <div className="flex flex-col w-full gap-2">
                     <button
                       type="submit"
-                      className="p-2 text-white bg-primary_dark rounded-sm w-40 self-end"
+                      className={`p-2 text-white ${
+                        uploading ? "bg-secondary_white" : "bg-primary_dark"
+                      } rounded w-40 self-end`}
                       disabled={uploading}
                     >
                       Make Payment

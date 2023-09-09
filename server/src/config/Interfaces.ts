@@ -50,6 +50,21 @@ export interface ICart {
   item: mongoose.Schema.Types.ObjectId
   quantity: number
 }
+interface IOrderItem {
+  order: mongoose.Schema.Types.ObjectId
+  qty: number
+}
+export interface IOrder extends Omit<ICart, 'item' | 'quantity'> {
+  username: string
+  state: string
+  postalCode: string
+  city: string
+  address: string
+  razorpay_order_id: string
+  razorpay_payment_id: string
+  razorpay_signature: string
+  Items: IOrderItem[]
+}
 
 // -------------------------------------------------------------
 

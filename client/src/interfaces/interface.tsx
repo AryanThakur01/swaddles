@@ -26,7 +26,7 @@ export interface IUserData {
 }
 // -------------------------------------------------
 
-// --------------------- Login ---------------------
+// --------------------- Signin --------------------
 export interface ILogin {
   username: string;
   password: string;
@@ -97,5 +97,11 @@ export interface ICart {
   _id?: string;
   item: IProducts;
   quantity: number;
+}
+// -------------------------------------------------
+// ------------------ Checkout ---------------------
+export interface ICheckout {
+  order: string;
+  qty: number;
 }
 // -------------------------------------------------
