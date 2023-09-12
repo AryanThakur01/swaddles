@@ -105,3 +105,19 @@ export interface ICheckout {
   qty: number;
 }
 // -------------------------------------------------
+// ------------------ My Orders --------------------
+interface IOrderItem {
+  order: IProducts;
+  qty: number;
+}
+export interface IMyOrders {
+  _id: string;
+  Items: IOrderItem[];
+  city: string;
+  state: string;
+  postalCode: string;
+  address: string;
+  username: string;
+  status: "pending" | "fulfilled" | "active";
+}
+// -------------------------------------------------

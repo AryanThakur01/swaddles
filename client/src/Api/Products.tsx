@@ -4,25 +4,29 @@ export const getProductsApi = async (
   search: string,
   page: number | null,
   limit?: number,
-  filter?: string | null
+  filter?: string | null,
 ) => {
   filter = filter?.split("-amp-").join(" & ");
   const { data } = await axios.get(
     `${import.meta.env.VITE_BACKEND}/api/v1/products/search?search=${
       search || " "
-    }&page=${page || 1}&limit=${limit || 20}&filter=${filter}`
+    }&page=${page || 1}&limit=${limit || 20}&filter=${filter}`,
   );
   return data;
 };
 
-export const getProductList = async (searchList: string)=>{
-  const {data} = await axios.get(`${import.meta.env.VITE_BACKEND}/api/v1/products/getproductlist?products=${searchList}`);
-  return data
-}
+export const getProductList = async (searchList: string) => {
+  const { data } = await axios.get(
+    `${
+      import.meta.env.VITE_BACKEND
+    }/api/v1/products/getproductlist?products=${searchList}`,
+  );
+  return data;
+};
 
 export const getSingleProductApi = async (_id: string | null) => {
   let { data } = await axios.get(
-    `${import.meta.env.VITE_BACKEND}/api/v1/products/oneproduct?_id=${_id}`
+    `${import.meta.env.VITE_BACKEND}/api/v1/products/oneproduct?_id=${_id}`,
   );
   data = data._doc;
   // ------ Converting Data For The Application ------------
@@ -50,8 +54,17 @@ export const getFilters = async () => {
   let { data } = await axios.get(
     `${
       import.meta.env.VITE_BACKEND
-    }/api/v1/products/getfilters/?search=${search}`
+    }/api/v1/products/getfilters/?search=${search}`,
   );
   // console.log(data);
   return data.filters;
+};
+
+export const getMyOrdersApi = async () => {
+  const Authorization = "Bearer " + localStorage.getItem("token");
+  let { data } = await axios.get(
+    `${import.meta.env.VITE_BACKEND}/api/v1/products/getMyOrders`,
+    { headers: { Authorization } },
+  );
+  return data;
 };
