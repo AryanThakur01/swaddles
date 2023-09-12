@@ -25,13 +25,6 @@ export const saveOrder = expressAsyncHandler(
     if (!payload || typeof payload === 'string')
       throw new Error('Improper Payload Recieved')
 
-    // console.log(payload)
-    // console.log({
-    //   ...shippingData,
-    //   ...razorpayRes,
-    //   Items: order,
-    //   user: payload._id,
-    // })
     const placedOrder = await Orders.create({
       ...shippingData,
       ...razorpayRes,

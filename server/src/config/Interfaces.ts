@@ -64,6 +64,7 @@ export interface IOrder extends Omit<ICart, 'item' | 'quantity'> {
   razorpay_payment_id: string
   razorpay_signature: string
   Items: IOrderItem[]
+  status: 'pending' | 'fulfilled' | 'active'
 }
 
 // -------------------------------------------------------------

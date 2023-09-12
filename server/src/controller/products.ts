@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import expressAsyncHandler from 'express-async-handler'
 import Products from '../models/products'
-import { IProducts } from '../config/Interfaces'
+import { ICustomRequest, IProducts } from '../config/Interfaces'
+import Orders from '../models/orders'
 
 interface ISearchQuery {
   search?: string
@@ -117,5 +118,20 @@ export const getHomePageProducts = expressAsyncHandler(
     const offers = await Products.find().skip(4500).limit(10)
     const bestSellers = await Products.find().skip(8000).limit(15)
     res.status(200).json({ offers, bestSellers })
+  }
+)
+
+export const getMyOrders = expressAsyncHandler(
+  async (req: ICustomRequest, res: Response) => {
+    const { payload } = req
+
+    if (!payload || typeof payload === 'string')
+      throw new Error('Improper Payload Recieved')
+
+    const user: string = payload._id
+    const myOrders = await Orders.find({ user })
+      .populate('Items.order')
+      .select('Items city state postalCode address username status')
+    res.status(200).json({ myOrders })
   }
 )
