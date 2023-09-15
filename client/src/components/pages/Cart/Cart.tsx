@@ -6,6 +6,7 @@ import { getCartApi } from "../../../Api/Cart";
 import { ICart } from "../../../interfaces/interface";
 import LoadingSkeleton from "../../UI/LoadingSkeleton";
 import { Link, useNavigate } from "react-router-dom";
+import { Slide, ToastContainer, toast } from "react-toastify";
 
 const Cart: FC = () => {
   const [orderList, setOrderList] = useState<ICart[]>();
@@ -18,15 +19,31 @@ const Cart: FC = () => {
   const navigate = useNavigate();
 
   const checkoutHandler = () => {
-    if (!orderList) return;
-    const lastElement = orderList.length
-    let checkoutData: string | string[] = []
+    if (!orderList || orderList.length === 0) {
+      toast.warning("Nothing In The Cart", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        toastId: "product-added",
+      });
+      return;
+    }
+    const lastElement = orderList.length;
+    let checkoutData: string | string[] = [];
     for (let index = 0; index < lastElement; index++) {
-      let productData = {order: orderList[index].item._id, qty: orderList[index].quantity};
+      let productData = {
+        order: orderList[index].item._id,
+        qty: orderList[index].quantity,
+      };
       checkoutData.push(JSON.stringify(productData));
     }
-    checkoutData = JSON.stringify(checkoutData)
-    navigate("/checkout?search="+checkoutData)
+    checkoutData = JSON.stringify(checkoutData);
+    navigate("/checkout?search=" + checkoutData);
   };
   const getCartProducts = async () => {
     const cart: ICart[] = await getCartApi();
@@ -57,6 +74,7 @@ const Cart: FC = () => {
   return (
     <div>
       <Navigation />
+      <ToastContainer transition={Slide} />
 
       <div className="my-20 md:mx-4 grid grid-cols-1 md:grid-cols-3 gap-3">
         <div className="bg-white p-3 md:col-span-2 rounded-sm flex flex-col gap-3 shadow-md">
@@ -85,7 +103,9 @@ const Cart: FC = () => {
             <hr className="my-2" />
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Price({quantity} Items)</p>
-              <p className="text-primary_dark">₹ {retailPrice.toLocaleString()}</p>
+              <p className="text-primary_dark">
+                ₹ {retailPrice.toLocaleString()}
+              </p>
             </div>
             <div className="flex justify-between my-2 text-secondary_dark">
               <p>Discount</p>
@@ -110,7 +130,8 @@ const Cart: FC = () => {
             </div>
             <hr className="my-6" />
             <p className="text-success font-bold tracking-wider text-center">
-              You will save <b>₹ {(retailPrice - discountPrice).toLocaleString()}</b> on this
+              You will save{" "}
+              <b>₹ {(retailPrice - discountPrice).toLocaleString()}</b> on this
               purchase
             </p>
             {orderList && (
