@@ -66,6 +66,7 @@ export interface IAccountNavigation {
 export interface IPersonalInfo {
   title: string;
   fields: Array<IInputFields>;
+  validationSchema?: Object;
 }
 // -------------------------------------------------
 

@@ -30,6 +30,10 @@ const Personal: FC = () => {
           placeholder: "Last Name",
         },
       ],
+      validationSchema: yup.object({
+        firstname: yup.string().required("Field Required"),
+        lastname: yup.string().required("Field Required"),
+      }),
     },
     {
       title: "Email Address",
@@ -41,6 +45,9 @@ const Personal: FC = () => {
           placeholder: "Enter Your Email Address",
         },
       ],
+      validationSchema: yup.object({
+        email: yup.string().required("Field Required"),
+      }),
     },
     {
       title: "Mobile Address",
@@ -52,21 +59,22 @@ const Personal: FC = () => {
           placeholder: "Enter Your Mobile Number",
         },
       ],
+      validationSchema: yup.object({
+        mobile: yup.string().required("Field Required"),
+      }),
     },
   ];
 
-  const validationSchema = yup.object({
-    firstname: yup.string().required("Field Required"),
-    lastname: yup.string().required("Field Required"),
-  });
-
   const onsubmitHandler = async (values: IUserDocument) => {
+    console.log(values);
     delete values.password;
     delete values.email;
     try {
+      const authHeader = "Bearer " + localStorage.getItem("token");
       const { data: user } = await axios.put(
         `${import.meta.env.VITE_BACKEND}/api/v1/userdata/update`,
-        { ...values }
+        { ...values },
+        { headers: { Authorization: authHeader } },
       );
       localStorage.setItem("user", JSON.stringify(user._doc));
       setEdit("");
@@ -85,7 +93,7 @@ const Personal: FC = () => {
                 <Formik
                   initialValues={user}
                   onSubmit={onsubmitHandler}
-                  validationSchema={validationSchema}
+                  validationSchema={category.validationSchema}
                   enableReinitialize
                 >
                   {({ resetForm }) => {
