@@ -12,6 +12,7 @@ const AccountNavigation: FC<IAccountNavigation> = ({
   children,
   activePage,
 }) => {
+  let user = JSON.parse(localStorage.getItem("user") || "");
   return (
     <div className="flex gap-3 p-2 mt-20">
       <div className="w-[25%] md:flex flex-col gap-3 hidden">
@@ -21,7 +22,9 @@ const AccountNavigation: FC<IAccountNavigation> = ({
           </div>
           <div>
             <p className="text-sm">Hello,</p>
-            <h1 className="font-bold text-md">Aryan Thakur</h1>
+            <h1 className="font-bold text-md">
+              {user.firstname} {user.lastname}
+            </h1>
           </div>
         </div>
         <div className="bg-white shadow-sm min-w-[25%] h-full rounded-sm">

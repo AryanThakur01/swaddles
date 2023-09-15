@@ -52,6 +52,11 @@ const Product: FC<IProduct> = () => {
 
   const addProductToCart = () => {
     try {
+      let token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
       const item = new URLSearchParams(location.search).get("_id");
       const quantity = 1;
       if (item) addToCartApi(item, quantity);
@@ -82,6 +87,11 @@ const Product: FC<IProduct> = () => {
   };
 
   const purchaseHandler = async () => {
+    let token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
     const _id = new URLSearchParams(location.search).get("_id");
     let checkoutData: string | string[] = [];
     let productData = { order: _id, qty: 1 };

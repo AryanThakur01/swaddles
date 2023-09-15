@@ -137,13 +137,13 @@ const Signup: FC = () => {
               );
             }}
           </Formik>
-          <button
-            type="button"
-            className="p-2 border-2 border-tertiary_white rounded-sm flex justify-center items-center gap-2"
-          >
-            <FaGoogle />
-            Sign up With Google
-          </button>
+          {/* <button */}
+          {/*   type="button" */}
+          {/*   className="p-2 border-2 border-tertiary_white rounded-sm flex justify-center items-center gap-2" */}
+          {/* > */}
+          {/*   <FaGoogle /> */}
+          {/*   Sign up With Google */}
+          {/* </button> */}
         </div>
       </div>
     </div>

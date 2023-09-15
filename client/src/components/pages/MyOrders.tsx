@@ -7,6 +7,7 @@ import { FaLocationArrow, FaUser } from "react-icons/fa";
 
 interface IProductCardData extends IProducts {
   qty: number;
+  status: "pending" | "fulfilled" | "active";
 }
 
 const MyOrders: FC = () => {
@@ -16,7 +17,6 @@ const MyOrders: FC = () => {
       const data = await getMyOrdersApi();
       const tempOrders: IMyOrders[] = data.myOrders;
       setOrders(tempOrders || []);
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -29,12 +29,19 @@ const MyOrders: FC = () => {
     retail_price,
     discounted_price,
     qty,
+    status,
   }) => {
     return (
       <div className="flex justify-between gap-4 bg-white p-5 rounded">
         <div className="flex gap-4">
-          <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
-            <img src={image[0]} className="h-28" />
+          <div
+            className={`absolute w-4 h-4 rounded-full ${
+              (status === "active" && "bg-success") ||
+              (status === "pending" && "bg-orange-400")
+            }`}
+          />
+          <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow">
+            <img src={image[0]} className="max-h-full" />
           </div>
           <div className="flex flex-col justify-between text-lg">
             <h2>{product_name}</h2>
@@ -43,9 +50,6 @@ const MyOrders: FC = () => {
         </div>
         <div className="flex flex-col justify-between gap-5">
           <p>₹ {discounted_price.toLocaleString()}</p>
-          {/* <button className="text-3xl text-secondary_dark hover:scale-105 hover:text-primary_dark"> */}
-          {/*   &times; */}
-          {/* </button> */}
         </div>
       </div>
     );
@@ -81,7 +85,12 @@ const MyOrders: FC = () => {
               <hr className="border" />
               {order.Items &&
                 order.Items.map((it) => (
-                  <ItemCard key={it._id} {...it.order} qty={it.qty} />
+                  <ItemCard
+                    key={it._id}
+                    {...it.order}
+                    qty={it.qty}
+                    status={order.status}
+                  />
                 ))}
             </div>
           ))}

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import Navigation from "../UI/Navigation";
 import assets from "../assets";
-import { FaArrowRight, FaGoogle } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import Input from "../UI/Input";
 import { FC, useEffect, useState } from "react";
 import { Form, Formik } from "formik";
@@ -90,13 +90,13 @@ const Login: FC = () => {
               );
             }}
           </Formik>
-          <button
-            type="button"
-            className="p-2 border-2 border-tertiary_white rounded-sm flex justify-center items-center gap-2"
-          >
-            <FaGoogle />
-            Sign in with google
-          </button>
+          {/* <button */}
+          {/*   type="button" */}
+          {/*   className="p-2 border-2 border-tertiary_white rounded-sm flex justify-center items-center gap-2" */}
+          {/* > */}
+          {/*   <FaGoogle /> */}
+          {/*   Sign in with google */}
+          {/* </button> */}
         </div>
         <div
           className="md:w-[45%] min-h-full overflow-hidden rounded-md md:flex hidden"
