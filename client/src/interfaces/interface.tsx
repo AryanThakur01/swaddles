@@ -109,6 +109,7 @@ export interface ICheckout {
 interface IOrderItem {
   order: IProducts;
   qty: number;
+  _id?: string;
 }
 export interface IMyOrders {
   _id: string;

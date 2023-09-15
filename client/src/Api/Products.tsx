@@ -66,5 +66,18 @@ export const getMyOrdersApi = async () => {
     `${import.meta.env.VITE_BACKEND}/api/v1/products/getMyOrders`,
     { headers: { Authorization } },
   );
+  let len = data.myOrders.length;
+  let orderList = data.myOrders;
+  // ------ Converting Image For The Application ------------
+  for (let i = 0; i < len; i++) {
+    let Items = orderList[i].Items;
+    let itemsLen = orderList[i].Items.length;
+    for (let j = 0; j < itemsLen; j++) {
+      let order = Items[j].order;
+      const image = order.image;
+      order.image = image.substring(2, image.length - 2).split('", "');
+    }
+  }
+  // -----------------------------------------------------------
   return data;
 };

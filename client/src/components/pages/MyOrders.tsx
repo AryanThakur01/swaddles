@@ -2,7 +2,12 @@ import { FC, useEffect, useState } from "react";
 import AccountNavigation from "../UI/ProfileNavigation";
 import Navigation from "../UI/Navigation";
 import { getMyOrdersApi } from "../../Api/Products";
-import { IMyOrders } from "../../interfaces/interface.tsx";
+import { IMyOrders, IProducts } from "../../interfaces/interface.tsx";
+import { FaLocationArrow, FaUser } from "react-icons/fa";
+
+interface IProductCardData extends IProducts {
+  qty: number;
+}
 
 const MyOrders: FC = () => {
   const [orders, setOrders] = useState<IMyOrders[] | undefined>();
@@ -10,11 +15,40 @@ const MyOrders: FC = () => {
     try {
       const data = await getMyOrdersApi();
       const tempOrders: IMyOrders[] = data.myOrders;
-      console.log(tempOrders);
       setOrders(tempOrders || []);
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const ItemCard: FC<IProductCardData> = ({
+    brand,
+    image,
+    product_name,
+    retail_price,
+    discounted_price,
+    qty,
+  }) => {
+    return (
+      <div className="flex justify-between gap-4 bg-white p-5 rounded">
+        <div className="flex gap-4">
+          <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
+            <img src={image[0]} className="h-28" />
+          </div>
+          <div className="flex flex-col justify-between text-lg">
+            <h2>{product_name}</h2>
+            <p className="text-secondary_dark">&times; {qty}</p>
+          </div>
+        </div>
+        <div className="flex flex-col justify-between gap-5">
+          <p>₹ {discounted_price.toLocaleString()}</p>
+          {/* <button className="text-3xl text-secondary_dark hover:scale-105 hover:text-primary_dark"> */}
+          {/*   &times; */}
+          {/* </button> */}
+        </div>
+      </div>
+    );
   };
   useEffect(() => {
     MyOrders();
@@ -23,10 +57,32 @@ const MyOrders: FC = () => {
     <>
       <Navigation />
       <AccountNavigation activePage="myOrders">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           {orders?.map((order) => (
-            <div className="bg-primary_white p-2" key={order._id}>
-              {order.state}
+            <div
+              className="bg-primary_white p-3 flex flex-col gap-2 rounded shadow-inner"
+              key={order._id}
+            >
+              <div className="flex gap-3 items-center">
+                <div className="text-tertiary_dark">
+                  <FaUser />
+                </div>
+                <p>{order.username}</p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="text-tertiary_dark">
+                  <FaLocationArrow />
+                </div>
+                <p>
+                  {order.address} {order.city}, {order.state},{" "}
+                  {order.postalCode}
+                </p>
+              </div>
+              <hr className="border" />
+              {order.Items &&
+                order.Items.map((it) => (
+                  <ItemCard key={it._id} {...it.order} qty={it.qty} />
+                ))}
             </div>
           ))}
         </div>
