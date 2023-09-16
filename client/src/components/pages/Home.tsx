@@ -244,58 +244,6 @@ const Home: FC = () => {
       <Navigation />
 
       {/* CAROUSEL */}
-      {/* <div className="absolute w-[100vw] top-[25%] z-10 hidden md:flex justify-between">
-        <button
-          type="button"
-          className="m-5 rounded-md py-5 px-1 text-3xl"
-          onClick={carouselPrevious}
-        >
-          {"<"}
-        </button>
-        <button
-          type="button"
-          className="m-5 rounded-md py-5 px-1 text-3xl"
-          onClick={carouselNext}
-        >
-          {">"}
-        </button>
-      </div> */}
-      {/* <div>
-        <div classname="absolute top-0 left-0 w-full h-[70vh] min-h-[350px] overflow-y-hidden flex md:items-center">
-          <div
-            style={{
-              background: `url(${carouseldata[activeindex].image}) no-repeat center center/cover`,
-            }}
-            classname="h-full w-full"
-          />
-          <div classname="absolute top-0 left-0 w-full h-full bg-primary_dark opacity-50" />
-        </div>
-        <div classname="relative z-0 w-[90%] md:w-[70%] m-auto min-h-[300px] h-[60vh] flex flex-col justify-end text-primary_white">
-          <div classname="my-5 text-xl">
-            {carouseldata[activeindex].shortdescription}
-          </div>
-          <button
-            classname="border-2 border-secondary_white w-40 p-1 rounded-[4px]"
-            type="button"
-          >
-            view product
-          </button>
-        </div>
-      </div> */}
-      {/* <div className="flex relative w-fit z-10 m-auto gap-2 items-center my-20">
-        {carouselData.map((item, i) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => setActiveIndex(i)}
-            aria-label="slide"
-            className={`w-6 ${
-              activeIndex === i ? "h-2" : "h-3"
-            } bg-secondary_dark`}
-          />
-        ))}
-      </div> */}
-
       <Swiper
         modules={[Autoplay, Pagination]}
         pagination={pagination}
@@ -305,15 +253,11 @@ const Home: FC = () => {
         {carousel &&
           carousel.map((item) => (
             <SwiperSlide key={item._id}>
-              <div
-              // style={{
-              //   background: `url(${item.image[0]}) no-repeat bottom/cover`,
-              // }}
-              >
+              <div className="flex">
                 <img
                   src={item.image[0]}
                   alt="NOT AVAILABLE"
-                  className="absolute z-[-1] h-full right-0"
+                  className="absolute z-[-1] max-h-full right-0 py-12"
                 />
                 <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
                   <p>{item.brand}</p>
