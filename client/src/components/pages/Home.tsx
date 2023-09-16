@@ -249,6 +249,7 @@ const Home: FC = () => {
         pagination={pagination}
         loop={true}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
+        className="md:my-0 my-11"
       >
         {carousel &&
           carousel.map((item) => (
@@ -257,7 +258,7 @@ const Home: FC = () => {
                 <img
                   src={item.image[0]}
                   alt="NOT AVAILABLE"
-                  className="absolute z-[-1] max-h-full right-0 py-12"
+                  className="absolute z-[-1] right-0 max-h-full self-center"
                 />
                 <div className="w-full h-[80vh] min-h-[500px] flex flex-col justify-center py-20 md:px-16 text-2xl px-4 gap-5 text-primary_white bg-black bg-opacity-50">
                   <p>{item.brand}</p>

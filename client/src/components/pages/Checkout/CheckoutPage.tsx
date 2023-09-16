@@ -110,11 +110,8 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
             <p className="text-secondary_dark">&times; {qty}</p>
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-5">
-          <p>₹ {discounted_price.toLocaleString()}</p>
-          <button className="text-3xl text-secondary_dark hover:scale-105 hover:text-primary_dark">
-            &times;
-          </button>
+        <div className="flex flex-col justify-between gap-5 flex-wrap">
+          <p>₹{discounted_price.toLocaleString()}</p>
         </div>
       </div>
     );
@@ -124,9 +121,6 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
   // -------------------- Formik Data And Validation --------------------------
   const validationSchema = yup.object({
     username: yup.string().required("Field Required"),
-    // cardnumber: yup.string().required("Field Required"),
-    // expirationdate: yup.string().required("Field Required"),
-    // cvc: yup.string().required("Field Required"),
     address: yup.string().required("Field Required"),
     city: yup.string().required("Field Required"),
     state: yup.string().required("Field Required"),
@@ -134,9 +128,6 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
   });
   const initialData = {
     username: "",
-    // cardnumber: "",
-    // expirationdate: "",
-    // cvc: "",
     address: "",
     city: "",
     state: "",
@@ -220,33 +211,6 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
                       inputClass={inputClass}
                     />
                     <hr className="my-5" />
-                    {/* <h2 className="my-5 text-xl font-bold text-secondary_dark"> */}
-                    {/*   Payment Details */}
-                    {/* </h2> */}
-                    {/* <Input */}
-                    {/*   label="Card Number" */}
-                    {/*   placeholder="4323 4323 4323 3243" */}
-                    {/*   isRequired={true} */}
-                    {/*   inputClass={inputClass} */}
-                    {/*   uni="cardnumber" */}
-                    {/* /> */}
-                    {/* <div className="flex gap-4"> */}
-                    {/*   <Input */}
-                    {/*     label="Expiration Date (MM/YY)" */}
-                    {/*     placeholder="mm/dd/yyyy" */}
-                    {/*     isRequired={true} */}
-                    {/*     uni="expirationdate" */}
-                    {/*     inputClass={"w-full " + inputClass} */}
-                    {/*   /> */}
-                    {/*   <Input */}
-                    {/*     label="CVC" */}
-                    {/*     isRequired={true} */}
-                    {/*     uni="cvc" */}
-                    {/*     inputClass={"w-full " + inputClass} */}
-                    {/*     containerClass="max-w-[20%]" */}
-                    {/*   /> */}
-                    {/* </div> */}
-                    {/* <hr className="my-5" /> */}
                     <h2 className="my-5 text-xl font-bold text-secondary_dark">
                       Shipping address
                     </h2>
@@ -257,7 +221,7 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
                       uni="address"
                       inputClass={"w-full " + inputClass}
                     />
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
                       <Input
                         label="City"
                         isRequired={true}

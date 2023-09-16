@@ -25,7 +25,7 @@ const ProductSpecs = () => {
   return (
     <div>
       <Navigation />
-      <div className="my-20 p-5 rounded-md w-[75vw] m-auto flex flex-col gap-5 shadow-lg text-primary_dark bg-white">
+      <div className="my-20 p-5 rounded-md md:w-[75vw] m-auto flex flex-col gap-5 shadow-lg text-primary_dark bg-white">
         <h1 className="text-center text-3xl font-bold">
           PRODUCT SPECIFICATIONS
         </h1>
