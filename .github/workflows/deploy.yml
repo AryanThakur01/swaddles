@@ -28,5 +28,5 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          source: 'client/build/*'
+          source: 'client/dist/*'
           target: '/var/www/ecom'
