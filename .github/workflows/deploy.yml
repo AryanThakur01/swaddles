@@ -17,7 +17,7 @@ jobs:
           node-version: '18'
 
       - name: Install Dependencies
-        run: npm install
+        run: npm --prefix client install
 
       - name: Build
         run: npm --prefix client run build
