@@ -8,7 +8,7 @@ const Account: FC = () => {
     <>
       <Navigation />
       <AccountNavigation activePage="account">
-        <div className="flex justify-center items-center w-full h-full">
+        <div className="flex justify-center items-center w-full h-[70vh]">
           Welcome {user.firstname} {user.lastname}, How may we help you?
         </div>
       </AccountNavigation>

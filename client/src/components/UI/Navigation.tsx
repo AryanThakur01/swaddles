@@ -72,29 +72,11 @@ const Navigation: FC = () => {
         id="nav"
         className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md overflow-hidden"
       >
-        {/* PROFILE */}
-        {/* {localStorage.getItem("token") ? ( */}
-        {/*   <Link */}
-        {/*     className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold" */}
-        {/*     to="/account" */}
-        {/*   > */}
-        {/*     <FaUserCircle /> */}
-        {/*   </Link> */}
-        {/* ) : ( */}
-        {/*   <Link */}
-        {/*     className="text-4xl invert-[20%] hover:invert-[22%] font-extrabold" */}
-        {/*     to="/login" */}
-        {/*   > */}
-        {/*     <FaUserCircle /> */}
-        {/*   </Link> */}
-        {/* )} */}
-        {/* LOGO */}
         <Link className="tracking-wide hover:tracking-wider" to="/">
           SWADDLES
         </Link>
 
         <div className="flex items-center gap-3">
-          {/* className="fixed z-40 top-0 md:top-3 w-full bg-secondary_white bg-opacity-90 backdrop-blur-3xl p-2 flex justify-between items-center text-xl md:mx-[15%] md:w-[70%] md:rounded-md" */}
           <div
             className={`fixed right-0 h-full bg-secondary_white p-1 z-50 flex justify-center w-full md:gap-5 ${
               isSearch ? "animate-movein_right" : "hidden"

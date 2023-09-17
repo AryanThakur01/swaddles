@@ -100,17 +100,22 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
     qty,
   }) => {
     return (
-      <div className="flex justify-between gap-4">
-        <div className="flex gap-4">
-          <div className="h-28 w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
-            <img src={image[0]} className="h-28" />
+      <div className="flex justify-between gap-4 md:flex-row flex-col">
+        <div className="flex gap-4 md:flex-row flex-col">
+          <div className="md:h-28 md:w-28 flex justify-center items-center overflow-hidden bg-white rounded shadow-sm">
+            <img src={image[0]} className="md:h-28 h-full" />
           </div>
           <div className="flex flex-col justify-between text-lg">
             <h2>{product_name}</h2>
-            <p className="text-secondary_dark">&times; {qty}</p>
+            <div className="flex justify-between gap-5 flex-wrap">
+              <div className="md:hidden ">
+                <p>₹{discounted_price.toLocaleString()}</p>
+              </div>
+              <p className="text-secondary_dark">&times; {qty}</p>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-5 flex-wrap">
+        <div className="hidden md:flex flex-col justify-between gap-5 flex-wrap">
           <p>₹{discounted_price.toLocaleString()}</p>
         </div>
       </div>
@@ -145,7 +150,7 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
   return (
     <div>
       <Navigation />
-      <div className="my-20 grid md:grid-cols-5 gap-3 bg-white p-3 max-w-7xl m-auto rounded">
+      <div className="my-20 grid md:grid-cols-5 grid-cols-1 gap-3 bg-white p-3 max-w-7xl m-auto rounded">
         <div className="min-h-full min-w-full bg-primary_white p-3 col-span-3 rounded shadow-inner flex flex-col">
           {order &&
             order.map((item) => (
@@ -188,6 +193,9 @@ const CheckoutPage: FC<ICheckoutPage> = () => {
               <p>{discountPrice.toLocaleString()}</p>
             </div>
             <hr className="my-6" />
+            <p className="text-center text-success">
+              You Saved <b>₹{(retailPrice - discountPrice).toLocaleString()}</b>
+            </p>
           </div>
           <h2 className="my-5 text-xl font-bold text-secondary_dark">
             Contact Information

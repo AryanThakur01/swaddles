@@ -61,7 +61,11 @@ const MyOrders: FC = () => {
     <>
       <Navigation />
       <AccountNavigation activePage="myOrders">
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 min-h-[60vh]">
+          {!orders ||
+            (orders.length === 0 && (
+              <p className="text-center my-32">No Orders Found</p>
+            ))}
           {orders?.map((order) => (
             <div
               className="bg-primary_white p-3 flex flex-col gap-2 rounded shadow-inner"

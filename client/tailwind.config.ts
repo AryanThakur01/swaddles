@@ -19,6 +19,10 @@ export default {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(0)" },
         },
+        popup_close: {
+          "0%": { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-800%)" },
+        },
         movein_right: {
           "0%": { width: "0" },
           "100%": { width: "100%" },
@@ -26,6 +30,7 @@ export default {
       },
       animation: {
         popup: "popup 0.2s ease-out",
+        popup_close: "popup_close 0.5s ease-in",
         movein_right: "movein_right 0.3s ease-out",
       },
       borderRadius: {
